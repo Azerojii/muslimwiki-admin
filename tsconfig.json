@@ -15,17 +15,10 @@
     "incremental": true,
     "plugins": [{ "name": "next" }],
     "paths": {
-      "@/components/*": ["../src/components/*"],
-      "@/lib/*": ["../src/lib/*"],
-      "@/types/*": ["../src/types/*"],
-      "@/*": ["../src/*"],
-      "next-auth": ["../node_modules/next-auth"],
-      "next-auth/*": ["../node_modules/next-auth/*"],
-      "@supabase/supabase-js": ["../node_modules/@supabase/supabase-js"],
-      "@vercel/blob": ["../node_modules/@vercel/blob"],
-      "lucide-react": ["../node_modules/lucide-react"],
-      "react-quill": ["../node_modules/react-quill"],
-      "react-markdown": ["../node_modules/react-markdown"]
+      "@/components/*": ["./src/components/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/*": ["./src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
