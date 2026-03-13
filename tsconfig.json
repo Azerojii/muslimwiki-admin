@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "ES2017",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [{ "name": "next" }],
+    "paths": {
+      "@/components/*": ["../src/components/*"],
+      "@/lib/*": ["../src/lib/*"],
+      "@/types/*": ["../src/types/*"],
+      "@/*": ["../src/*"],
+      "next-auth": ["../node_modules/next-auth"],
+      "next-auth/*": ["../node_modules/next-auth/*"],
+      "@supabase/supabase-js": ["../node_modules/@supabase/supabase-js"],
+      "@vercel/blob": ["../node_modules/@vercel/blob"],
+      "lucide-react": ["../node_modules/lucide-react"],
+      "react-quill": ["../node_modules/react-quill"],
+      "react-markdown": ["../node_modules/react-markdown"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
