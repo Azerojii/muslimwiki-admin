@@ -13,6 +13,9 @@ interface EditSuggestion {
   article_slug: string
   article_title: string
   suggested_content: string
+  suggested_title?: string | null
+  suggested_excerpt?: string | null
+  suggested_categories?: string[] | null
   reason?: string
   suggester_name?: string
   status: string
@@ -173,6 +176,23 @@ export default function ReviewEditSuggestionPage() {
                 <X size={16} />
                 Rejeter
               </button>
+            </div>
+          )}
+
+          {(suggestion.suggested_title || suggestion.suggested_excerpt || suggestion.suggested_categories) && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+              <h3 className="font-bold mb-2">Modifications proposées</h3>
+              <div className="space-y-2 text-sm">
+                {suggestion.suggested_title && (
+                  <div><strong>Titre :</strong> {suggestion.suggested_title}</div>
+                )}
+                {suggestion.suggested_excerpt && (
+                  <div><strong>Extrait :</strong> {suggestion.suggested_excerpt}</div>
+                )}
+                {suggestion.suggested_categories && (
+                  <div><strong>Catégories :</strong> {suggestion.suggested_categories.join(', ')}</div>
+                )}
+              </div>
             </div>
           )}
 
