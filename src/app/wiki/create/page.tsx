@@ -10,7 +10,8 @@ import QuillEditor from '@/components/QuillEditor'
 import { Loader2, Plus } from 'lucide-react'
 import MosqueForm from '@/components/MosqueForm'
 import ImamForm from '@/components/ImamForm'
-import type { MosqueData, ImamData } from '@/types/mosque'
+import BurialForm from '@/components/BurialForm'
+import type { MosqueData, ImamData, BurialData } from '@/types/mosque'
 
 function CreateArticleForm() {
   const router = useRouter()
@@ -31,9 +32,10 @@ function CreateArticleForm() {
     items: Array<{ label: string; value: string; type: 'text' | 'date' | 'link' }>
   }>>([{ title: '', items: [{ label: '', value: '', type: 'text' }] }])
   const [youtubeVideos, setYoutubeVideos] = useState<string[]>([])
-  const [articleType, setArticleType] = useState<'article' | 'mosque' | 'imam'>('article')
+  const [articleType, setArticleType] = useState<'article' | 'mosque' | 'imam' | 'burial'>('article')
   const [mosqueData, setMosqueData] = useState<MosqueData>({})
   const [imamData, setImamData] = useState<ImamData>({})
+  const [burialData, setBurialData] = useState<BurialData>({})
   const [authorName, setAuthorName] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
@@ -163,6 +165,7 @@ function CreateArticleForm() {
           infobox: articleType === 'article' ? infoboxData : undefined,
           mosque_data: articleType === 'mosque' ? mosqueData : undefined,
           imam_data: articleType === 'imam' ? imamData : undefined,
+          burial_data: articleType === 'burial' ? burialData : undefined,
           author_name: authorName || undefined,
           youtubeVideos: validYoutubeVideos.length > 0 ? validYoutubeVideos : undefined,
         }),
@@ -252,12 +255,13 @@ function CreateArticleForm() {
               <label className="block text-sm font-bold mb-2">Type d'article</label>
               <select
                 value={articleType}
-                onChange={(e) => setArticleType(e.target.value as 'article' | 'mosque' | 'imam')}
+                onChange={(e) => setArticleType(e.target.value as 'article' | 'mosque' | 'imam' | 'burial')}
                 className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="article">Article général</option>
                 <option value="mosque">Mosquée</option>
                 <option value="imam">Imam</option>
+                <option value="burial">Sépulture</option>
               </select>
             </div>
 
@@ -281,6 +285,11 @@ function CreateArticleForm() {
             {/* Imam Form */}
             {articleType === 'imam' && (
               <ImamForm imamData={imamData} onChange={setImamData} />
+            )}
+
+            {/* Burial Form */}
+            {articleType === 'burial' && (
+              <BurialForm burialData={burialData} onChange={setBurialData} />
             )}
 
             {/* Infobox */}

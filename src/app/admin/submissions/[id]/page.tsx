@@ -17,6 +17,8 @@ interface Submission {
   content?: string
   article_type?: string
   mosque_data?: Record<string, unknown>
+  imam_data?: Record<string, unknown>
+  burial_data?: Record<string, unknown>
   submitted_at?: string
   submittedAt?: string
   author_name?: string
@@ -290,6 +292,36 @@ export default function ReviewSubmissionPage() {
                   <h3 className="font-bold mb-3">Données mosquée</h3>
                   <div className="grid grid-cols-2 gap-2 text-sm">
                     {Object.entries(submission.mosque_data)
+                      .filter(([, v]) => v !== null && v !== undefined && v !== '')
+                      .map(([k, v]) => (
+                        <div key={k}>
+                          <strong>{k}:</strong>{' '}
+                          {typeof v === 'object' ? JSON.stringify(v) : String(v)}
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )}
+              {submission.article_type === 'imam' && submission.imam_data && (
+                <div className="bg-gray-50 border border-gray-300 rounded-lg p-4 mb-6">
+                  <h3 className="font-bold mb-3">Données imam</h3>
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    {Object.entries(submission.imam_data)
+                      .filter(([, v]) => v !== null && v !== undefined && v !== '')
+                      .map(([k, v]) => (
+                        <div key={k}>
+                          <strong>{k}:</strong>{' '}
+                          {typeof v === 'object' ? JSON.stringify(v) : String(v)}
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )}
+              {submission.article_type === 'burial' && submission.burial_data && (
+                <div className="bg-gray-50 border border-gray-300 rounded-lg p-4 mb-6">
+                  <h3 className="font-bold mb-3">Données sépulture</h3>
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    {Object.entries(submission.burial_data)
                       .filter(([, v]) => v !== null && v !== undefined && v !== '')
                       .map(([k, v]) => (
                         <div key={k}>

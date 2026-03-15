@@ -34,6 +34,8 @@ export interface MosqueData {
   facilities?: string[]
   gallery?: { src: string; caption: string }[]
   region?: string
+  department?: string
+  commune?: string
   currentImam?: string
   previousImams?: MosqueImam[]
 }
@@ -48,7 +50,32 @@ export interface ImamData {
   rank?: string
   nationality?: string
   region?: string
+  department?: string
+  commune?: string
   currentMosque?: string
   previousMosques?: { name: string; from?: string; to?: string }[]
   customFields?: { label: string; value: string }[]
+}
+
+export interface BurialData {
+  name?: string
+  headerColor?: string
+  image?: { src: string; caption: string }
+  graveImage?: { src: string; caption: string }
+  fullName?: string
+  fatherName?: string
+  motherName?: string
+  nationality?: string
+  countryOfOrigin?: string
+  birthDate?: string
+  deathDate?: string
+  region?: string
+  department?: string
+  commune?: string
+  cemeteryName?: string
+  division?: string
+  graveNumber?: string
+  concessionType?: '15' | '30' | '50' | 'perpetuelle'
+  contactAddress?: string
+  tribute?: string
 }
