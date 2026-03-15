@@ -14,4 +14,3 @@ export default function EditButton({ slug }: { slug: string }) {
     </Link>
   )
 }
-

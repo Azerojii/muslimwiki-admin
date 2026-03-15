@@ -40,7 +40,7 @@ export default function UserMenu() {
               </p>
             </div>
             <Link
-              href="/submit"
+              href="https://wikimuslim.vercel.app/submit"
               className="flex items-center gap-3 px-4 py-3 hover:bg-secondary/10 transition-colors group"
               onClick={() => setIsOpen(false)}
             >

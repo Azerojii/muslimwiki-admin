@@ -19,7 +19,8 @@ function CreateArticleForm() {
 
   const [title, setTitle] = useState(suggestedTitle)
   const [description, setDescription] = useState('')
-  const [category, setCategory] = useState('General')
+  const [category, setCategory] = useState('')
+  const [categories, setCategories] = useState<string[]>([])
   const [content, setContent] = useState('')
   const [infoboxTitle, setInfoboxTitle] = useState('')
   const [infoboxColor, setInfoboxColor] = useState('#067782')
@@ -36,6 +37,24 @@ function CreateArticleForm() {
   const [authorName, setAuthorName] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
+
+  const isQuillEmpty = (html: string) => !html || html.replace(/<(.|\n)*?>/g, '').trim() === '' || html === '<p><br></p>'
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/categories')
+        const data = await response.json()
+        if (data.categories && data.categories.length > 0) {
+          setCategories(data.categories)
+          setCategory(data.categories[0])
+        }
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+      }
+    }
+    fetchCategories()
+  }, [])
 
   const addInfoboxSection = () => {
     setInfoboxSections([...infoboxSections, { title: '', items: [{ label: '', value: '', type: 'text' }] }])
@@ -167,11 +186,11 @@ function CreateArticleForm() {
   return (
     <div className="min-h-screen bg-white">
       <WikiHeader />
-      
+
       <div className="flex max-w-[1400px] mx-auto">
         <WikiSidebar />
-        
-        <main className="flex-1 px-6 py-4 max-w-[860px]">
+
+        <main className="flex-1 px-6 py-4 max-w-4xl">
           <h1 className="text-4xl font-serif font-bold border-b border-gray-300 pb-2 mb-6">
             Créer un nouvel article
           </h1>
@@ -222,13 +241,9 @@ function CreateArticleForm() {
                 onChange={(e) => setCategory(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
               >
-                <option>Histoire</option>
-                <option>Architecture</option>
-                <option>Culture</option>
-                <option>Religion</option>
-                <option>Événements</option>
-                <option>Personnalités</option>
-                <option>Général</option>
+                {categories.map(cat => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
               </select>
             </div>
 
@@ -308,7 +323,7 @@ function CreateArticleForm() {
                 <div>
                   <label className="block text-xs font-medium mb-2">Image de l'infobox</label>
                   <ImageUploader
-                    onImageInsert={() => {}} 
+                    onImageInsert={() => {}}
                     onImageSelected={handleInfoboxImageAutoFill}
                   />
                   {infoboxImage && (
@@ -476,7 +491,7 @@ function CreateArticleForm() {
             <div className="flex gap-4">
               <button
                 type="submit"
-                disabled={isSubmitting || !title || !content}
+                disabled={isSubmitting || !title || isQuillEmpty(content)}
                 className="px-6 py-3 bg-primary text-white rounded hover:opacity-90 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center gap-2 font-medium"
               >
                 {isSubmitting ? (

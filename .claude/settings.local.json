@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep:*)",
+      "Bash(npm install:*)",
+      "Bash(cp src/app/api/articles/route.ts admin/src/app/api/articles/route.ts && cp \"src/app/api/articles/[slug]/route.ts\" \"admin/src/app/api/articles/[slug]/route.ts\" && cp src/app/api/submissions/route.ts admin/src/app/api/submissions/route.ts && cp \"src/app/api/submissions/[id]/route.ts\" \"admin/src/app/api/submissions/[id]/route.ts\" && cp src/app/api/edit-suggestions/route.ts admin/src/app/api/edit-suggestions/route.ts && cp \"src/app/api/edit-suggestions/[id]/route.ts\" \"admin/src/app/api/edit-suggestions/[id]/route.ts\" && cp src/app/api/categories/route.ts admin/src/app/api/categories/route.ts && cp src/app/api/upload/route.ts admin/src/app/api/upload/route.ts && cp src/app/api/search/route.ts admin/src/app/api/search/route.ts && echo \"done\")",
+      "Bash(cp src/app/admin/page.tsx admin/src/app/admin/page.tsx && cp src/app/admin/submissions/page.tsx admin/src/app/admin/submissions/page.tsx && cp \"src/app/admin/submissions/[id]/page.tsx\" \"admin/src/app/admin/submissions/[id]/page.tsx\" && cp \"src/app/admin/edit-suggestions/[id]/page.tsx\" \"admin/src/app/admin/edit-suggestions/[id]/page.tsx\" && cp src/app/auth/signin/page.tsx admin/src/app/auth/signin/page.tsx && cp src/app/wiki/create/page.tsx admin/src/app/wiki/create/page.tsx && cp \"src/app/wiki/[slug]/edit/page.tsx\" \"admin/src/app/wiki/[slug]/edit/page.tsx\" && echo \"done\")",
+      "Bash(npx tsc:*)",
+      "Bash(find \"C:\\\\Users\\\\dalil\\\\Desktop\\\\GMP\\\\Prog\\\\wikipedia\\\\admin\\\\src\" -name \"*.tsx\" -o -name \"*.ts\" 2>/dev/null | sort)",
+      "Bash(cd \"C:\\\\Users\\\\dalil\\\\Desktop\\\\GMP\\\\Prog\\\\wikipedia\\\\admin\" && gh repo create muslimwiki-admin --public --description \"Admin interface for MuslimWiki — standalone Next.js app\" 2>&1)",
+      "Bash(where gh:*)",
+      "Bash(cd \"C:\\\\Users\\\\dalil\\\\Desktop\\\\GMP\\\\Prog\\\\wikipedia\" && npx tsx scripts/seed-categories.ts)"
+    ]
+  }
+}

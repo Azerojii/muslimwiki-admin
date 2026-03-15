@@ -1,65 +1,45 @@
 'use client'
 
 import Link from 'next/link'
-import { Menu, BookOpen, List, Star, Clock } from 'lucide-react'
+import { BookOpen } from 'lucide-react'
 
 export default function WikiSidebar() {
   return (
-    <aside className="w-48 flex-shrink-0 bg-wiki-bg border-r border-gray-200 px-4 py-6 hidden lg:block">
-      <nav className="space-y-4">
+    <aside className="w-56 flex-shrink-0 bg-[#f8f9fa] border-r border-gray-200 px-5 py-6 hidden lg:block">
+      <nav className="space-y-5 sticky top-20" aria-label="Barre latérale">
         <div>
-          <h3 className="text-xs font-bold uppercase text-gray-500 mb-2">Navigation</h3>
-          <ul className="space-y-1 text-sm">
+          <h3 className="text-[11px] font-bold uppercase text-gray-400 tracking-wider mb-2.5">Navigation</h3>
+          <ul className="space-y-0.5 text-sm">
             <li>
-              <Link href="/" className="flex items-center gap-2 text-primary hover:underline">
-                <BookOpen size={16} />
+              <Link href="/" className="flex items-center gap-2 text-gray-700 hover:text-primary hover:bg-white rounded-lg px-2.5 py-1.5 -mx-1 transition-all">
+                <BookOpen size={15} className="text-gray-400" />
                 Page d'accueil
               </Link>
             </li>
           </ul>
         </div>
 
-        <div className="pt-4 border-t border-gray-300">
-          <h3 className="text-xs font-bold uppercase text-gray-500 mb-2">Catégories</h3>
-          <ul className="space-y-1 text-sm">
-            <li>
-              <Link href="/category/Histoire" className="text-primary hover:underline">
-                Histoire
-              </Link>
-            </li>
-            <li>
-              <Link href="/category/Architecture" className="text-primary hover:underline">
-                Architecture
-              </Link>
-            </li>
-            <li>
-              <Link href="/category/Culture" className="text-primary hover:underline">
-                Culture
-              </Link>
-            </li>
-            <li>
-              <Link href="/category/Religion" className="text-primary hover:underline">
-                Religion
-              </Link>
-            </li>
-            <li>
-              <Link href="/category/Général" className="text-primary hover:underline">
-                Général
-              </Link>
-            </li>
-            <li>
-              <Link href="/category/Personnalités" className="text-primary hover:underline">
-                Personnalités
-              </Link>
-            </li>
+        <div className="pt-4 border-t border-gray-200">
+          <h3 className="text-[11px] font-bold uppercase text-gray-400 tracking-wider mb-2.5">Catégories</h3>
+          <ul className="space-y-0.5 text-sm">
+            {['Histoire', 'Architecture', 'Culture', 'Religion', 'Général', 'Personnalités'].map((cat) => (
+              <li key={cat}>
+                <Link
+                  href={`/category/${cat}`}
+                  className="text-gray-700 hover:text-primary hover:bg-white rounded-lg px-2.5 py-1.5 -mx-1 block transition-all"
+                >
+                  {cat}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
-        <div className="pt-4 border-t border-gray-300">
-          <h3 className="text-xs font-bold uppercase text-gray-500 mb-2">Outils</h3>
-          <ul className="space-y-1 text-sm">
+        <div className="pt-4 border-t border-gray-200">
+          <h3 className="text-[11px] font-bold uppercase text-gray-400 tracking-wider mb-2.5">Outils</h3>
+          <ul className="space-y-0.5 text-sm">
             <li>
-              <Link href="/submit" className="text-gray-700 hover:text-primary">
+              <Link href="/submit" className="text-gray-700 hover:text-primary hover:bg-white rounded-lg px-2.5 py-1.5 -mx-1 block transition-all">
                 Soumettre un article
               </Link>
             </li>

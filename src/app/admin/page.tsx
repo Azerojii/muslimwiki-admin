@@ -108,7 +108,7 @@ export default function AdminPage() {
     const articlesInCategory = articles.filter((a) =>
       (a.categories && a.categories.includes(category)) || a.category === category
     )
-    
+
     if (articlesInCategory.length > 0) {
       alert(`Impossible de supprimer cette catégorie car ${articlesInCategory.length} article(s) l'utilise(nt).`)
       return
@@ -162,11 +162,11 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-white">
       <WikiHeader />
-      
+
       <div className="flex max-w-[1400px] mx-auto">
         <WikiSidebar />
-        
-        <main className="flex-1 px-6 py-4 max-w-[860px]">
+
+        <main className="flex-1 px-6 py-4 max-w-4xl">
           <div className="mb-6">
             <h1 className="text-4xl font-serif font-bold border-b border-gray-300 pb-2 mb-4">
               Administration
@@ -445,4 +445,3 @@ export default function AdminPage() {
     </div>
   )
 }
-

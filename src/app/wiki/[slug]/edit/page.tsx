@@ -59,16 +59,16 @@ export default function EditArticlePage() {
       if (data.author_name) setAuthorName(data.author_name)
       if (data.mosque_data) setMosqueData(data.mosque_data)
       if (data.imam_data) setImamData(data.imam_data)
-      
+
       if (data.infobox) {
         setInfoboxTitle(data.infobox.title || '')
         setInfoboxColor(data.infobox.headerColor || '#8b7355')
-        
+
         if (data.infobox.image) {
           setInfoboxImage(data.infobox.image.src || '')
           setInfoboxImageCaption(data.infobox.image.caption || '')
         }
-        
+
         if (data.infobox.sections && data.infobox.sections.length > 0) {
           setInfoboxSections(
             data.infobox.sections.map((section: any) => ({
@@ -234,11 +234,11 @@ export default function EditArticlePage() {
   return (
     <div className="min-h-screen bg-white">
       <WikiHeader />
-      
+
       <div className="flex max-w-[1400px] mx-auto">
         <WikiSidebar />
-        
-        <main className="flex-1 px-6 py-4 max-w-[860px]">
+
+        <main className="flex-1 px-6 py-4 max-w-4xl">
           <h1 className="text-4xl font-serif font-bold border-b border-gray-300 pb-2 mb-6">
             Modifier l'article
           </h1>
@@ -568,4 +568,3 @@ export default function EditArticlePage() {
     </div>
   )
 }
-

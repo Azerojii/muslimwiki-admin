@@ -11,6 +11,67 @@
 }
 
 body {
-  font-family: Georgia, 'Times New Roman', serif, 'Apple Color Emoji', 'Noto Color Emoji';
+  font-family: Georgia, 'Times New Roman', serif, 'Apple Color Emoji', 'Noto Color Emoji', 'Twemoji Mozilla', 'EmojiOne Color';
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth focus outlines for accessibility */
+*:focus-visible {
+  outline: 2px solid hsl(187 96% 27%);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Better selection colors */
+::selection {
+  background-color: hsl(187 96% 27% / 0.15);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Print styles */
+@media print {
+  header,
+  nav,
+  aside,
+  .no-print,
+  [data-sidebar],
+  [class*="WikiHeader"],
+  [class*="WikiSidebar"] {
+    display: none !important;
+  }
+
+  body {
+    font-size: 12pt;
+    color: #000;
+    background: #fff;
+  }
+
+  main {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  .float-right {
+    float: none !important;
+    margin: 0 0 1rem 0 !important;
+  }
+}
+
+/* Emoji styling to ensure proper rendering */
+img.emoji {
+  height: 1em;
+  width: 1em;
+  margin: 0 0.05em 0 0.1em;
+  vertical-align: -0.1em;
+  display: inline;
 }

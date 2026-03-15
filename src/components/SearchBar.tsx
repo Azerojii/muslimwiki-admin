@@ -12,7 +12,7 @@ interface Article {
   category: string
 }
 
-export default function SearchBar() {
+export default function SearchBar({ className }: { className?: string }) {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<Article[]>([])
   const [articles, setArticles] = useState<Article[]>([])
@@ -28,7 +28,7 @@ export default function SearchBar() {
       .then((data) => {
         const articleData: Article[] = data.results || data
         setArticles(articleData)
-        
+
         // Initialize Fuse.js
         const fuseInstance = new Fuse<Article>(articleData, {
           keys: ['title', 'description', 'category'],
@@ -79,31 +79,35 @@ export default function SearchBar() {
   }
 
   return (
-    <div ref={searchRef} className="relative w-64">
+    <div ref={searchRef} className={`relative ${className ?? 'w-64'}`}>
       <div className="relative">
         <input
-          type="text"
+          type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Rechercher dans MuslimWiki..."
-          className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+          placeholder="Rechercher..."
+          aria-label="Rechercher un article"
+          role="combobox"
+          aria-expanded={isOpen}
+          aria-autocomplete="list"
+          className="w-full px-3 py-1.5 pr-9 border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary text-sm transition-all"
         />
-        <Search className="absolute right-3 top-2.5 text-gray-400" size={18} />
+        <Search className="absolute right-2.5 top-2 text-gray-400" size={16} />
       </div>
 
       {isOpen && query.trim() !== '' && (
-        <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
+        <div className="absolute top-full mt-1.5 w-full bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-80 overflow-y-auto" role="listbox">
           {results.length > 0 ? (
             results.map((article) => (
               <button
                 key={article.slug}
                 onClick={() => handleSelect(article.slug)}
-                className="w-full text-left px-4 py-3 hover:bg-gray-100 border-b border-gray-200 last:border-0"
+                role="option"
+                className="w-full text-left px-4 py-2.5 hover:bg-gray-50 border-b border-gray-100 last:border-0 transition-colors"
               >
-                <div className="font-semibold text-primary">{article.title}</div>
-                <div className="text-sm text-gray-600 line-clamp-1">{article.description}</div>
-                <div className="text-xs text-gray-500 mt-1">{article.category}</div>
+                <div className="font-medium text-sm text-primary">{article.title}</div>
+                <div className="text-xs text-gray-500 line-clamp-1 mt-0.5">{article.description}</div>
               </button>
             ))
           ) : (
