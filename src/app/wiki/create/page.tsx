@@ -261,7 +261,7 @@ function CreateArticleForm() {
                 <option value="article">Article général</option>
                 <option value="mosque">Mosquée</option>
                 <option value="imam">Imam</option>
-                <option value="burial">Sépulture</option>
+                <option value="burial">Mort Musulman</option>
               </select>
             </div>
 

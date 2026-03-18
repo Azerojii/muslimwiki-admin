@@ -37,11 +37,16 @@ export default function EditArticlePage() {
   const [burialData, setBurialData] = useState<BurialData>({})
   const [authorName, setAuthorName] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [categories, setCategories] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
 
   useEffect(() => {
     fetchArticle()
+    fetch('/api/categories')
+      .then(res => res.json())
+      .then(data => { if (data.categories) setCategories(data.categories) })
+      .catch(() => {})
   }, [slug])
 
   const fetchArticle = async () => {
@@ -293,13 +298,9 @@ export default function EditArticlePage() {
                 onChange={(e) => setCategory(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
               >
-                <option>Histoire</option>
-                <option>Architecture</option>
-                <option>Culture</option>
-                <option>Religion</option>
-                <option>Événements</option>
-                <option>Personnalités</option>
-                <option>Général</option>
+                {categories.map(cat => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
               </select>
             </div>
 
@@ -314,7 +315,7 @@ export default function EditArticlePage() {
                 <option value="article">Article général</option>
                 <option value="mosque">Mosquée</option>
                 <option value="imam">Imam</option>
-                <option value="burial">Sépulture</option>
+                <option value="burial">Mort Musulman</option>
               </select>
             </div>
 

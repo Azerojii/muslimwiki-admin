@@ -23,7 +23,7 @@ export default function BurialInfobox({ burial }: BurialInfoboxProps) {
         className="text-white font-bold text-center py-2 px-3"
         style={{ backgroundColor: headerColor }}
       >
-        {burial.name || burial.fullName || 'Sépulture'}
+        {burial.name || burial.fullName || 'Mort Musulman'}
       </div>
 
       {/* Portrait */}
@@ -72,8 +72,25 @@ export default function BurialInfobox({ burial }: BurialInfoboxProps) {
               <td className="py-1.5 px-3 align-top">{burial.countryOfOrigin}</td>
             </tr>
           )}
+          {burial.convertedToIslam && (
+            <tr className="border-t border-[#a2a9b1]">
+              <td className="py-1.5 px-3 align-top text-gray-700 font-medium">Converti à l'Islam</td>
+              <td className="py-1.5 px-3 align-top">{burial.convertedToIslam}</td>
+            </tr>
+          )}
         </tbody>
       </table>
+
+      {burial.additionalInfo && (
+        <>
+          <div className="bg-[#eaecf0] text-gray-800 font-semibold px-3 py-1.5 text-center">
+            Informations supplémentaires
+          </div>
+          <div className="p-3 text-xs text-gray-700 leading-relaxed">
+            {burial.additionalInfo}
+          </div>
+        </>
+      )}
 
       {/* Dates */}
       {(burial.birthDate || burial.deathDate) && (
@@ -104,65 +121,73 @@ export default function BurialInfobox({ burial }: BurialInfoboxProps) {
       <div className="bg-[#eaecf0] text-gray-800 font-semibold px-3 py-1.5 text-center">
         Lieu de sépulture
       </div>
-      <table className="w-full border-collapse">
-        <tbody>
-          {burial.cemeteryName && (
-            <tr className="border-t border-[#a2a9b1]">
-              <td className="py-1.5 px-3 align-top text-gray-700 font-medium" style={{ width: '45%' }}>Cimetière</td>
-              <td className="py-1.5 px-3 align-top">{burial.cemeteryName}</td>
-            </tr>
-          )}
-          {burial.commune && (
-            <tr className="border-t border-[#a2a9b1]">
-              <td className="py-1.5 px-3 align-top text-gray-700 font-medium">Commune</td>
-              <td className="py-1.5 px-3 align-top">{burial.commune}</td>
-            </tr>
-          )}
-          {burial.department && (
-            <tr className="border-t border-[#a2a9b1]">
-              <td className="py-1.5 px-3 align-top text-gray-700 font-medium">Département</td>
-              <td className="py-1.5 px-3 align-top">{burial.department}</td>
-            </tr>
-          )}
-          {burial.region && (
-            <tr className="border-t border-[#a2a9b1]">
-              <td className="py-1.5 px-3 align-top text-gray-700 font-medium">Région</td>
-              <td className="py-1.5 px-3 align-top">{burial.region}</td>
-            </tr>
-          )}
-          {burial.division && (
-            <tr className="border-t border-[#a2a9b1]">
-              <td className="py-1.5 px-3 align-top text-gray-700 font-medium">Division</td>
-              <td className="py-1.5 px-3 align-top">{burial.division}</td>
-            </tr>
-          )}
-          {burial.graveNumber && (
-            <tr className="border-t border-[#a2a9b1]">
-              <td className="py-1.5 px-3 align-top text-gray-700 font-medium">N° de tombe</td>
-              <td className="py-1.5 px-3 align-top">{burial.graveNumber}</td>
-            </tr>
-          )}
-          {burial.concessionType && (
-            <tr className="border-t border-[#a2a9b1]">
-              <td className="py-1.5 px-3 align-top text-gray-700 font-medium">Concession</td>
-              <td className="py-1.5 px-3 align-top">{concessionLabel[burial.concessionType] || burial.concessionType}</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-
-      {/* Grave photo */}
-      {burial.graveImage && (
+      {burial.burialStatus === 'inconnu' ? (
+        <div className="p-3 text-sm text-gray-600 italic text-center">
+          Lieu de sépulture inconnu
+        </div>
+      ) : (
         <>
-          <div className="bg-[#eaecf0] text-gray-800 font-semibold px-3 py-1.5 text-center">
-            Photo de la tombe
-          </div>
-          <div className="bg-white p-2">
-            <img src={burial.graveImage.src} alt="Tombe" className="w-full h-auto" />
-            {burial.graveImage.caption && (
-              <p className="text-xs italic text-gray-600 text-center mt-1 px-1">{burial.graveImage.caption}</p>
-            )}
-          </div>
+          <table className="w-full border-collapse">
+            <tbody>
+              {burial.cemeteryName && (
+                <tr className="border-t border-[#a2a9b1]">
+                  <td className="py-1.5 px-3 align-top text-gray-700 font-medium" style={{ width: '45%' }}>Cimetière</td>
+                  <td className="py-1.5 px-3 align-top">{burial.cemeteryName}</td>
+                </tr>
+              )}
+              {burial.commune && (
+                <tr className="border-t border-[#a2a9b1]">
+                  <td className="py-1.5 px-3 align-top text-gray-700 font-medium">Commune</td>
+                  <td className="py-1.5 px-3 align-top">{burial.commune}</td>
+                </tr>
+              )}
+              {burial.department && (
+                <tr className="border-t border-[#a2a9b1]">
+                  <td className="py-1.5 px-3 align-top text-gray-700 font-medium">Département</td>
+                  <td className="py-1.5 px-3 align-top">{burial.department}</td>
+                </tr>
+              )}
+              {burial.region && (
+                <tr className="border-t border-[#a2a9b1]">
+                  <td className="py-1.5 px-3 align-top text-gray-700 font-medium">Région</td>
+                  <td className="py-1.5 px-3 align-top">{burial.region}</td>
+                </tr>
+              )}
+              {burial.division && (
+                <tr className="border-t border-[#a2a9b1]">
+                  <td className="py-1.5 px-3 align-top text-gray-700 font-medium">Division</td>
+                  <td className="py-1.5 px-3 align-top">{burial.division}</td>
+                </tr>
+              )}
+              {burial.graveNumber && (
+                <tr className="border-t border-[#a2a9b1]">
+                  <td className="py-1.5 px-3 align-top text-gray-700 font-medium">N° de tombe</td>
+                  <td className="py-1.5 px-3 align-top">{burial.graveNumber}</td>
+                </tr>
+              )}
+              {burial.concessionType && (
+                <tr className="border-t border-[#a2a9b1]">
+                  <td className="py-1.5 px-3 align-top text-gray-700 font-medium">Concession</td>
+                  <td className="py-1.5 px-3 align-top">{concessionLabel[burial.concessionType] || burial.concessionType}</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+
+          {/* Grave photo */}
+          {burial.graveImage && (
+            <>
+              <div className="bg-[#eaecf0] text-gray-800 font-semibold px-3 py-1.5 text-center">
+                Photo de la tombe
+              </div>
+              <div className="bg-white p-2">
+                <img src={burial.graveImage.src} alt="Tombe" className="w-full h-auto" />
+                {burial.graveImage.caption && (
+                  <p className="text-xs italic text-gray-600 text-center mt-1 px-1">{burial.graveImage.caption}</p>
+                )}
+              </div>
+            </>
+          )}
         </>
       )}
 
