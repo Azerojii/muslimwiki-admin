@@ -485,6 +485,7 @@ function CreateArticleForm() {
             </div>
 
             {/* Content */}
+            {articleType !== 'burial' && (
             <div>
               <label className="block text-sm font-bold mb-2">
                 Contenu de l'article <span className="text-red-500">*</span>
@@ -495,12 +496,13 @@ function CreateArticleForm() {
                 placeholder="Commencez à écrire votre article ici..."
               />
             </div>
+            )}
 
             {/* Submit Button */}
             <div className="flex gap-4">
               <button
                 type="submit"
-                disabled={isSubmitting || !title || isQuillEmpty(content)}
+                disabled={isSubmitting || !title || (articleType !== 'burial' && isQuillEmpty(content))}
                 className="px-6 py-3 bg-primary text-white rounded hover:opacity-90 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center gap-2 font-medium"
               >
                 {isSubmitting ? (
