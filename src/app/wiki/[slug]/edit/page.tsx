@@ -40,6 +40,13 @@ export default function EditArticlePage() {
   const [categories, setCategories] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
+  const getWordCount = (html: string) => {
+    const text = html.replace(/<(.|\n)*?>/g, '').trim()
+    return text ? text.split(/\s+/).filter(Boolean).length : 0
+  }
+  const wordCount = getWordCount(content)
+  const BURIAL_WORD_LIMIT = 140
+  const isBurialOverLimit = articleType === 'burial' && wordCount > BURIAL_WORD_LIMIT
 
   useEffect(() => {
     fetchArticle()
@@ -538,24 +545,30 @@ export default function EditArticlePage() {
             </div>
 
             {/* Content */}
-            {articleType !== 'burial' && (
             <div>
               <label className="block text-sm font-bold mb-2">
                 Contenu de l'article <span className="text-red-500">*</span>
+                {articleType === 'burial' && (
+                  <span className={`ml-2 text-xs font-normal ${isBurialOverLimit ? 'text-red-500' : 'text-gray-500'}`}>
+                    ({wordCount}/{BURIAL_WORD_LIMIT} mots)
+                  </span>
+                )}
               </label>
               <QuillEditor
                 value={content}
                 onChange={setContent}
                 placeholder="Commencez à écrire votre article ici..."
               />
+              {isBurialOverLimit && (
+                <p className="text-red-500 text-xs mt-1">Le contenu ne doit pas dépasser {BURIAL_WORD_LIMIT} mots.</p>
+              )}
             </div>
-            )}
 
             {/* Submit Button */}
             <div className="flex gap-4">
               <button
                 type="submit"
-                disabled={isSubmitting || !title || (articleType !== 'burial' && !content)}
+                disabled={isSubmitting || !title || !content || isBurialOverLimit}
                 className="px-6 py-3 bg-primary text-white rounded hover:opacity-90 disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center gap-2 font-medium"
               >
                 {isSubmitting ? (

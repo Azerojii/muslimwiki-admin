@@ -130,17 +130,6 @@ export default function BurialForm({ burialData, onChange }: BurialFormProps) {
         </div>
       </div>
 
-      <div>
-        <label className="block text-xs font-medium mb-1">Informations supplémentaires</label>
-        <textarea
-          value={burialData.additionalInfo || ''}
-          onChange={(e) => update('additionalInfo', e.target.value)}
-          rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded text-sm resize-none"
-          placeholder="Informations supplémentaires..."
-        />
-      </div>
-
       {/* Dates */}
       <div className="grid grid-cols-2 gap-4">
         <div>

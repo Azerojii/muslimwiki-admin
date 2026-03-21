@@ -80,5 +80,5 @@ export interface BurialData {
   tribute?: string
   burialStatus?: 'enterre' | 'inconnu'
   convertedToIslam?: string
-  additionalInfo?: string
+
 }

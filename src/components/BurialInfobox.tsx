@@ -81,17 +81,6 @@ export default function BurialInfobox({ burial }: BurialInfoboxProps) {
         </tbody>
       </table>
 
-      {burial.additionalInfo && (
-        <>
-          <div className="bg-[#eaecf0] text-gray-800 font-semibold px-3 py-1.5 text-center">
-            Informations supplémentaires
-          </div>
-          <div className="p-3 text-xs text-gray-700 leading-relaxed">
-            {burial.additionalInfo}
-          </div>
-        </>
-      )}
-
       {/* Dates */}
       {(burial.birthDate || burial.deathDate) && (
         <>
