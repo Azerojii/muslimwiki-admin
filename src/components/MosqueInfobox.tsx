@@ -258,6 +258,30 @@ export default function MosqueInfobox({ mosque }: MosqueInfoboxProps) {
           </div>
         </>
       )}
+      {/* Contact */}
+      {(mosque.contactPhone || mosque.contactEmail) && (
+        <>
+          <div className="bg-[#eaecf0] text-gray-800 font-semibold px-3 py-1.5 text-center">
+            Contact
+          </div>
+          <table className="w-full border-collapse">
+            <tbody>
+              {mosque.contactPhone && (
+                <tr className="border-t border-[#a2a9b1]">
+                  <td className="py-1.5 px-3 align-top text-gray-700 font-medium" style={{ width: '45%' }}>Téléphone</td>
+                  <td className="py-1.5 px-3 align-top">{mosque.contactPhone}</td>
+                </tr>
+              )}
+              {mosque.contactEmail && (
+                <tr className="border-t border-[#a2a9b1]">
+                  <td className="py-1.5 px-3 align-top text-gray-700 font-medium">Email</td>
+                  <td className="py-1.5 px-3 align-top">{mosque.contactEmail}</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </>
+      )}
     </div>
   )
 }

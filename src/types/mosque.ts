@@ -38,6 +38,8 @@ export interface MosqueData {
   commune?: string
   currentImam?: string
   previousImams?: MosqueImam[]
+  contactPhone?: string
+  contactEmail?: string
 }
 
 export interface ImamData {
@@ -55,6 +57,8 @@ export interface ImamData {
   currentMosque?: string
   previousMosques?: { name: string; from?: string; to?: string }[]
   customFields?: { label: string; value: string }[]
+  contactPhone?: string
+  contactEmail?: string
 }
 
 export interface BurialData {

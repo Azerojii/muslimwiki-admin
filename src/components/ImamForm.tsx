@@ -263,6 +263,29 @@ export default function ImamForm({ imamData, onChange }: ImamFormProps) {
           </button>
         </div>
       </div>
+      {/* Contact */}
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block text-xs font-medium mb-1">Téléphone</label>
+          <input
+            type="tel"
+            value={imamData.contactPhone || ''}
+            onChange={(e) => update('contactPhone', e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+            placeholder="ex: 01 23 45 67 89"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-medium mb-1">Email</label>
+          <input
+            type="email"
+            value={imamData.contactEmail || ''}
+            onChange={(e) => update('contactEmail', e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+            placeholder="ex: contact@exemple.fr"
+          />
+        </div>
+      </div>
     </div>
   )
 }

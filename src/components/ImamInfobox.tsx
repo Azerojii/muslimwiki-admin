@@ -127,6 +127,30 @@ export default function ImamInfobox({ imam }: ImamInfoboxProps) {
           </table>
         </>
       )}
+      {/* Contact */}
+      {(imam.contactPhone || imam.contactEmail) && (
+        <>
+          <div className="bg-[#eaecf0] text-gray-800 font-semibold px-3 py-1.5 text-center">
+            Contact
+          </div>
+          <table className="w-full border-collapse">
+            <tbody>
+              {imam.contactPhone && (
+                <tr className="border-t border-[#a2a9b1]">
+                  <td className="py-1.5 px-3 align-top text-gray-700 font-medium" style={{ width: '45%' }}>Téléphone</td>
+                  <td className="py-1.5 px-3 align-top">{imam.contactPhone}</td>
+                </tr>
+              )}
+              {imam.contactEmail && (
+                <tr className="border-t border-[#a2a9b1]">
+                  <td className="py-1.5 px-3 align-top text-gray-700 font-medium">Email</td>
+                  <td className="py-1.5 px-3 align-top">{imam.contactEmail}</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </>
+      )}
     </div>
   )
 }
