@@ -40,7 +40,7 @@ export default function UserMenu() {
               </p>
             </div>
             <Link
-              href="https://wikimuslim.vercel.app/submit"
+              href="/wiki/create"
               className="flex items-center gap-3 px-4 py-3 hover:bg-secondary/10 transition-colors group"
               onClick={() => setIsOpen(false)}
             >
@@ -48,8 +48,8 @@ export default function UserMenu() {
                 <Plus size={18} className="text-secondary" />
               </div>
               <div>
-                <div className="font-medium text-gray-800">Soumettre un article</div>
-                <div className="text-xs text-gray-500">Proposer un nouvel article</div>
+                <div className="font-medium text-gray-800">Créer un article</div>
+                <div className="text-xs text-gray-500">Publier un nouvel article</div>
               </div>
             </Link>
 

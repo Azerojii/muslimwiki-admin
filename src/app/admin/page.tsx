@@ -265,7 +265,7 @@ export default function AdminPage() {
                       <div className="flex justify-between items-start">
                         <div className="flex-1">
                           <Link
-                            href={`/wiki/${article.slug}`}
+                            href={`/wiki/${article.slug}/edit`}
                             className="text-xl font-bold text-primary hover:underline"
                           >
                             {article.title}

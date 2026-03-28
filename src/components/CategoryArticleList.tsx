@@ -83,7 +83,7 @@ export default function CategoryArticleList({ articles }: CategoryArticleListPro
           filtered.map((article) => (
             <Link
               key={article.slug}
-              href={`/wiki/${article.slug}`}
+              href={`/wiki/${article.slug}/edit`}
               className="group block p-5 bg-white border border-gray-200 rounded-xl hover:border-primary/30 hover:shadow-md transition-all duration-200"
             >
               <div className="flex items-start justify-between gap-3">

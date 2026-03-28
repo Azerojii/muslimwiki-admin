@@ -30,12 +30,12 @@ export default function WikiHeader() {
                 Page d'accueil
               </Link>
               <Link
-                href="/submit"
+                href="/wiki/create"
                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-primary text-white rounded-lg hover:opacity-90 transition-all text-sm font-medium shadow-sm"
                 title="Ajouter un article"
               >
                 <PenLine size={14} />
-                Soumettre un article
+                Créer un article
               </Link>
             </nav>
           </div>
@@ -69,13 +69,13 @@ export default function WikiHeader() {
               Page d'accueil
             </Link>
             <Link
-              href="/submit"
+              href="/wiki/create"
               className="inline-flex items-center gap-1.5 px-3 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition-colors text-sm font-medium w-fit"
               title="Ajouter un article"
               onClick={() => setMobileMenuOpen(false)}
             >
               <PenLine size={14} />
-              Soumettre un article
+              Créer un article
             </Link>
           </nav>
         </div>

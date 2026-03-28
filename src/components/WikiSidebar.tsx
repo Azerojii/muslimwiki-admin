@@ -20,27 +20,21 @@ export default function WikiSidebar() {
         </div>
 
         <div className="pt-4 border-t border-gray-200">
-          <h3 className="text-[11px] font-bold uppercase text-gray-400 tracking-wider mb-2.5">Catégories</h3>
-          <ul className="space-y-0.5 text-sm">
-            {['Histoire', 'Architecture', 'Culture', 'Religion', 'Général', 'Personnalités'].map((cat) => (
-              <li key={cat}>
-                <Link
-                  href={`/category/${cat}`}
-                  className="text-gray-700 hover:text-primary hover:bg-white rounded-lg px-2.5 py-1.5 -mx-1 block transition-all"
-                >
-                  {cat}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="pt-4 border-t border-gray-200">
           <h3 className="text-[11px] font-bold uppercase text-gray-400 tracking-wider mb-2.5">Outils</h3>
           <ul className="space-y-0.5 text-sm">
             <li>
-              <Link href="/submit" className="text-gray-700 hover:text-primary hover:bg-white rounded-lg px-2.5 py-1.5 -mx-1 block transition-all">
-                Soumettre un article
+              <Link href="/admin" className="text-gray-700 hover:text-primary hover:bg-white rounded-lg px-2.5 py-1.5 -mx-1 block transition-all">
+                Administration
+              </Link>
+            </li>
+            <li>
+              <Link href="/wiki/create" className="text-gray-700 hover:text-primary hover:bg-white rounded-lg px-2.5 py-1.5 -mx-1 block transition-all">
+                Créer un article
+              </Link>
+            </li>
+            <li>
+              <Link href="/admin/submissions" className="text-gray-700 hover:text-primary hover:bg-white rounded-lg px-2.5 py-1.5 -mx-1 block transition-all">
+                Soumissions
               </Link>
             </li>
           </ul>

@@ -26,7 +26,7 @@ export default function AllArticlesList({ articles }: AllArticlesListProps) {
         {displayedArticles.map((article) => (
           <Link
             key={article.slug}
-            href={`/wiki/${article.slug}`}
+            href={`/wiki/${article.slug}/edit`}
             className="group block p-4 bg-white border border-gray-200 rounded-xl hover:border-primary/30 hover:shadow-md transition-all duration-200"
           >
             <div className="flex items-start gap-3">
