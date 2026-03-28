@@ -88,7 +88,7 @@ export default function CategoryArticleList({ articles }: CategoryArticleListPro
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1.5">
+                  <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                     <h3 className="text-lg font-bold text-primary group-hover:text-primary/80 transition-colors">{article.title}</h3>
                     <TypeBadge type={article.article_type} />
                   </div>

@@ -166,7 +166,7 @@ export default function AdminPage() {
       <div className="flex max-w-[1400px] mx-auto">
         <WikiSidebar />
 
-        <main className="flex-1 px-6 py-4 max-w-4xl">
+        <main className="flex-1 px-4 sm:px-6 py-4 max-w-4xl min-w-0">
           <div className="mb-6">
             <h1 className="text-4xl font-serif font-bold border-b border-gray-300 pb-2 mb-4">
               Administration
@@ -197,10 +197,10 @@ export default function AdminPage() {
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-4 mb-6 border-b border-gray-300">
+          <div className="flex gap-1 mb-6 border-b border-gray-300 overflow-x-auto">
             <button
               onClick={() => setActiveTab('articles')}
-              className={`px-4 py-2 font-medium ${
+              className={`px-3 py-2 font-medium text-sm whitespace-nowrap ${
                 activeTab === 'articles'
                   ? 'border-b-2 border-primary text-primary'
                   : 'text-gray-600 hover:text-primary'
@@ -210,7 +210,7 @@ export default function AdminPage() {
             </button>
             <button
               onClick={() => setActiveTab('categories')}
-              className={`px-4 py-2 font-medium ${
+              className={`px-3 py-2 font-medium text-sm whitespace-nowrap ${
                 activeTab === 'categories'
                   ? 'border-b-2 border-primary text-primary'
                   : 'text-gray-600 hover:text-primary'
@@ -220,15 +220,15 @@ export default function AdminPage() {
             </button>
             <button
               onClick={() => setActiveTab('edit-suggestions')}
-              className={`px-4 py-2 font-medium ${
+              className={`px-3 py-2 font-medium text-sm whitespace-nowrap ${
                 activeTab === 'edit-suggestions'
                   ? 'border-b-2 border-primary text-primary'
                   : 'text-gray-600 hover:text-primary'
               }`}
             >
-              Suggestions de modification
+              Suggestions
               {editSuggestions.length > 0 && (
-                <span className="ml-2 px-1.5 py-0.5 bg-yellow-400 text-yellow-900 text-xs rounded-full">
+                <span className="ml-1.5 px-1.5 py-0.5 bg-yellow-400 text-yellow-900 text-xs rounded-full">
                   {editSuggestions.length}
                 </span>
               )}
@@ -271,9 +271,9 @@ export default function AdminPage() {
                             {article.title}
                           </Link>
                           <p className="text-gray-600 mt-1">{article.excerpt || article.description || ''}</p>
-                          <div className="flex gap-4 mt-2 text-sm text-gray-500">
-                            <span>Catégorie: {(article.categories && article.categories[0]) || article.category || ''}</span>
-                            <span>Mise à jour: {article.updated_at ? new Date(article.updated_at).toLocaleDateString('fr-FR') : (article.lastUpdated || '')}</span>
+                          <div className="flex flex-wrap gap-2 mt-2 text-sm text-gray-500">
+                            <span>Cat: {(article.categories && article.categories[0]) || article.category || ''}</span>
+                            <span className="hidden sm:inline">Mise à jour: {article.updated_at ? new Date(article.updated_at).toLocaleDateString('fr-FR') : (article.lastUpdated || '')}</span>
                             {article.article_type && article.article_type !== 'article' && (
                               <span className="px-1.5 py-0.5 bg-blue-100 text-blue-700 rounded text-xs">{article.article_type}</span>
                             )}
@@ -320,7 +320,7 @@ export default function AdminPage() {
               {isAddingCategory && (
                 <div className="bg-blue-50 border-2 border-blue-300 rounded-lg p-4 mb-6">
                   <h3 className="font-bold mb-3">Ajouter une nouvelle catégorie</h3>
-                  <div className="flex gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <input
                       type="text"
                       value={newCategory}
@@ -329,21 +329,23 @@ export default function AdminPage() {
                       className="flex-1 px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary"
                       onKeyPress={(e) => e.key === 'Enter' && handleAddCategory()}
                     />
-                    <button
-                      onClick={handleAddCategory}
-                      className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-                    >
-                      Ajouter
-                    </button>
-                    <button
-                      onClick={() => {
-                        setIsAddingCategory(false)
-                        setNewCategory('')
-                      }}
-                      className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
-                    >
-                      Annuler
-                    </button>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={handleAddCategory}
+                        className="flex-1 sm:flex-none px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+                      >
+                        Ajouter
+                      </button>
+                      <button
+                        onClick={() => {
+                          setIsAddingCategory(false)
+                          setNewCategory('')
+                        }}
+                        className="flex-1 sm:flex-none px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+                      >
+                        Annuler
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}

@@ -29,41 +29,41 @@ export default function AllArticlesList({ articles }: AllArticlesListProps) {
             href={`/wiki/${article.slug}`}
             className="group block p-4 bg-white border border-gray-200 rounded-xl hover:border-primary/30 hover:shadow-md transition-all duration-200"
           >
-            <div className="flex justify-between items-start">
-              <div className="flex items-start gap-3 flex-1">
-                {article.image_url && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={article.image_url}
-                    alt={article.title}
-                    loading="lazy"
-                    referrerPolicy="no-referrer"
-                    className="w-14 h-14 rounded-lg object-cover flex-shrink-0 border border-gray-100"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
-                  />
-                )}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-base font-bold text-primary group-hover:text-primary/80 transition-colors">
-                      {article.title}
-                    </h3>
-                    {article.article_type === 'mosque' && (
-                      <span className="px-2 py-0.5 bg-teal-50 text-teal-700 text-xs font-medium rounded-full">
-                        🕌 Mosquée
-                      </span>
-                    )}
-                    {article.article_type === 'imam' && (
-                      <span className="px-2 py-0.5 bg-purple-50 text-purple-700 text-xs font-medium rounded-full">
-                        👤 Imam
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-sm text-gray-500 mt-0.5 line-clamp-2">{article.excerpt}</p>
+            <div className="flex items-start gap-3">
+              {article.image_url && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={article.image_url}
+                  alt={article.title}
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                  className="w-14 h-14 rounded-lg object-cover flex-shrink-0 border border-gray-100"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
+                />
+              )}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <h3 className="text-base font-bold text-primary group-hover:text-primary/80 transition-colors">
+                    {article.title}
+                  </h3>
+                  {article.article_type === 'mosque' && (
+                    <span className="px-2 py-0.5 bg-teal-50 text-teal-700 text-xs font-medium rounded-full">
+                      🕌 Mosquée
+                    </span>
+                  )}
+                  {article.article_type === 'imam' && (
+                    <span className="px-2 py-0.5 bg-purple-50 text-purple-700 text-xs font-medium rounded-full">
+                      👤 Imam
+                    </span>
+                  )}
+                  {article.categories?.[0] && (
+                    <span className="text-xs text-gray-400 hidden sm:inline">
+                      {article.categories[0]}
+                    </span>
+                  )}
                 </div>
+                <p className="text-sm text-gray-500 mt-0.5 line-clamp-2">{article.excerpt}</p>
               </div>
-              <span className="text-xs text-gray-400 ml-4 flex-shrink-0 mt-1">
-                {article.categories?.[0] ?? ''}
-              </span>
             </div>
           </Link>
         ))}

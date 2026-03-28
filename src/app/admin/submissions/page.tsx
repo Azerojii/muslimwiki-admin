@@ -53,7 +53,7 @@ export default function SubmissionsPage() {
       <div className="flex max-w-[1400px] mx-auto">
         <WikiSidebar />
         
-        <main className="flex-1 px-6 py-4 max-w-[1100px]">
+        <main className="flex-1 px-4 sm:px-6 py-4 max-w-[1100px] min-w-0">
           <div className="mb-6">
             <h1 className="text-4xl font-serif font-bold border-b border-gray-300 pb-2 mb-4">
               Soumissions en attente
@@ -83,40 +83,33 @@ export default function SubmissionsPage() {
                   key={submission.id}
                   className="border border-gray-300 rounded-lg p-5 hover:bg-gray-50"
                 >
-                  <div className="flex justify-between items-start">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
                     <div className="flex-1">
                       <h2 className="text-xl font-bold text-gray-900 mb-2">
                         {submission.title}
                       </h2>
                       <p className="text-gray-600 mb-3">{submission.description}</p>
-                      
-                      <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+
+                      <div className="flex flex-wrap gap-2 text-sm text-gray-500">
                         <span className="flex items-center gap-1">
                           <strong>Catégorie:</strong> {submission.category}
                         </span>
                         <span className="flex items-center gap-1">
-                          <strong>Soumis par:</strong> {submission.submitterName || 'Anonyme'}
+                          <strong>Par:</strong> {submission.submitterName || 'Anonyme'}
                         </span>
-                        {submission.submitterEmail && (
-                          <span className="flex items-center gap-1">
-                            <strong>Email:</strong> {submission.submitterEmail}
-                          </span>
-                        )}
                         <span className="flex items-center gap-1">
                           <strong>Date:</strong> {formatDate(submission.submittedAt)}
                         </span>
                       </div>
                     </div>
 
-                    <div className="flex gap-2 ml-4">
-                      <Link
-                        href={`/admin/submissions/${submission.id}`}
-                        className="p-2 text-primary hover:bg-primary/10 rounded border border-primary"
-                        title="Examiner"
-                      >
-                        <Eye size={18} />
-                      </Link>
-                    </div>
+                    <Link
+                      href={`/admin/submissions/${submission.id}`}
+                      className="inline-flex items-center gap-2 px-4 py-2 text-primary hover:bg-primary/10 rounded border border-primary text-sm font-medium"
+                    >
+                      <Eye size={16} />
+                      Examiner
+                    </Link>
                   </div>
                 </div>
               ))}

@@ -10,7 +10,7 @@ export default function ImamInfobox({ imam }: ImamInfoboxProps) {
   const headerColor = imam.headerColor || '#067782'
 
   return (
-    <div className="w-full bg-[#f9f9f9] border border-[#a2a9b1] text-sm" style={{ maxWidth: '280px' }}>
+    <div className="w-full bg-[#f9f9f9] border border-[#a2a9b1] text-sm rounded-lg overflow-hidden">
       {/* Header */}
       <div
         className="text-white font-bold text-center py-2 px-3"

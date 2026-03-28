@@ -29,9 +29,26 @@ body {
   background-color: hsl(187 96% 27% / 0.15);
 }
 
-/* Smooth scrolling */
+/* Smooth scrolling & mobile optimizations */
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Prevent horizontal overflow on mobile */
+body {
+  overflow-x: hidden;
+}
+
+/* Larger touch targets for interactive elements */
+@media (max-width: 640px) {
+  button, [role="button"] {
+    min-height: 40px;
+  }
+
+  input, select, textarea {
+    font-size: 16px; /* Prevents iOS zoom on focus */
+  }
 }
 
 /* Print styles */

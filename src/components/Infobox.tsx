@@ -50,8 +50,7 @@ export default function Infobox({
   sections 
 }: InfoboxProps) {
   return (
-    <div className="w-full bg-[#f9f9f9] border border-[#a2a9b1] text-sm float-right ml-4 mb-4 clear-right" 
-         style={{ maxWidth: '280px' }}>
+    <div className="w-full bg-[#f9f9f9] border border-[#a2a9b1] text-sm mb-4 sm:float-right sm:ml-4 sm:clear-right sm:max-w-[280px]">
       {/* Header */}
       <div 
         className="text-white font-bold text-center py-2 px-3"
