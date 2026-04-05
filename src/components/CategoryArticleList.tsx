@@ -21,15 +21,19 @@ function getArticleRegion(article: WikiArticle): string | undefined {
 function TypeBadge({ type }: { type: string }) {
   if (type === 'mosque') {
     return (
-      <span className="px-2 py-0.5 bg-teal-100 text-teal-800 text-xs font-semibold rounded-full whitespace-nowrap">
-        🕌 Mosquée
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-teal-100 text-teal-800 text-xs font-semibold rounded-full whitespace-nowrap">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/mosquee.png" alt="" className="w-3.5 h-3.5 object-contain" />
+        Mosquée
       </span>
     )
   }
   if (type === 'imam') {
     return (
-      <span className="px-2 py-0.5 bg-purple-100 text-purple-800 text-xs font-semibold rounded-full whitespace-nowrap">
-        👤 Imam
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-500 text-white text-xs font-semibold rounded-full whitespace-nowrap">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/muslimah_white.png" alt="" className="w-3.5 h-3.5 object-contain" />
+        Imam
       </span>
     )
   }
