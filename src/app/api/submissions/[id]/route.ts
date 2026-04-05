@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
-import { getSubmission, updateSubmissionStatus, updateSubmission, createArticle } from '@/lib/wiki'
+import { getSubmission, updateSubmissionStatus, updateSubmission, createArticle, createCategory, getAllCategories } from '@/lib/wiki'
 
 // Get single submission
 export async function GET(
@@ -40,7 +40,7 @@ export async function PUT(
     }
 
     const body = await request.json()
-    const { action, title, content, excerpt, article_type, infobox, mosque_data, image_url, categories, author_name } = body
+    const { action, title, content, excerpt, description, article_type, infobox, mosque_data, image_url, categories, category, author_name } = body
     const { id } = await params
 
     const submission = await getSubmission(id)
@@ -55,17 +55,28 @@ export async function PUT(
 
       const slug = title.trim().replace(/\s+/g, '_')
 
+      const finalCategories = categories || (category ? [category] : submission.categories || [])
+      const existingCategories = await getAllCategories()
+      const existingNames = new Set(existingCategories.map((item) => item.name.toLowerCase()))
+
+      for (const categoryName of finalCategories) {
+        if (categoryName && !existingNames.has(categoryName.toLowerCase())) {
+          await createCategory(categoryName)
+          existingNames.add(categoryName.toLowerCase())
+        }
+      }
+
       // Publish to wiki_articles
       const article = await createArticle({
         slug,
         title,
         content,
-        excerpt: excerpt || submission.excerpt || '',
+        excerpt: excerpt || description || submission.excerpt || '',
         article_type: article_type || submission.article_type || 'article',
         infobox: infobox || submission.infobox || null,
         mosque_data: mosque_data || submission.mosque_data || null,
         image_url: image_url || submission.image_url || null,
-        categories: categories || submission.categories || [],
+        categories: finalCategories,
         author_name: author_name || submission.author_name || null,
       })
 

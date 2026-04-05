@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import WikiHeader from '@/components/WikiHeader'
 import WikiSidebar from '@/components/WikiSidebar'
 import { Edit, Trash2, Plus, FolderPlus, Settings, X } from 'lucide-react'
+import { DEFAULT_FOOTER, normalizeFooterSettings, type FooterContactItem, type FooterInfoSection, type FooterLink } from '@/lib/footer'
 
 interface Article {
   slug: string
@@ -39,8 +40,13 @@ export default function AdminPage() {
   const [isAddingCategory, setIsAddingCategory] = useState(false)
 
   // Footer settings state
-  const [footerSocialLinks, setFooterSocialLinks] = useState<Array<{ label: string; url: string; type: string }>>([])
-  const [footerFriendlySites, setFooterFriendlySites] = useState<Array<{ label: string; url: string }>>([])
+  const [footerTitle, setFooterTitle] = useState(DEFAULT_FOOTER.title)
+  const [footerDescription, setFooterDescription] = useState(DEFAULT_FOOTER.description)
+  const [footerSocialLinks, setFooterSocialLinks] = useState<FooterLink[]>([])
+  const [footerFriendlySites, setFooterFriendlySites] = useState<FooterLink[]>([])
+  const [footerContactItems, setFooterContactItems] = useState<FooterContactItem[]>([])
+  const [footerInfoSections, setFooterInfoSections] = useState<FooterInfoSection[]>([])
+  const [footerLegalText, setFooterLegalText] = useState(DEFAULT_FOOTER.legalText)
   const [footerLoading, setFooterLoading] = useState(false)
   const [footerSaving, setFooterSaving] = useState(false)
   const [footerSaved, setFooterSaved] = useState(false)
@@ -57,9 +63,14 @@ export default function AdminPage() {
     try {
       const response = await fetch('/api/settings?key=footer')
       const data = await response.json()
-      const value = data.value || {}
-      setFooterSocialLinks(value.socialLinks || [])
-      setFooterFriendlySites(value.friendlySites || [])
+      const value = normalizeFooterSettings(data.value)
+      setFooterTitle(value.title)
+      setFooterDescription(value.description)
+      setFooterSocialLinks(value.socialLinks)
+      setFooterFriendlySites(value.friendlySites)
+      setFooterContactItems(value.contactItems)
+      setFooterInfoSections(value.infoSections)
+      setFooterLegalText(value.legalText)
     } catch (error) {
       console.error('Error fetching footer settings:', error)
     } finally {
@@ -74,7 +85,18 @@ export default function AdminPage() {
       const response = await fetch('/api/settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ key: 'footer', value: { socialLinks: footerSocialLinks, friendlySites: footerFriendlySites } }),
+        body: JSON.stringify({
+          key: 'footer',
+          value: {
+            title: footerTitle,
+            description: footerDescription,
+            socialLinks: footerSocialLinks,
+            friendlySites: footerFriendlySites,
+            contactItems: footerContactItems,
+            infoSections: footerInfoSections,
+            legalText: footerLegalText,
+          },
+        }),
       })
       if (!response.ok) throw new Error('Failed to save')
       setFooterSaved(true)
@@ -513,6 +535,35 @@ export default function AdminPage() {
                 <div className="text-center py-8">Chargement...</div>
               ) : (
                 <div className="space-y-8">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div>
+                      <label className="block text-sm font-semibold mb-2">Titre</label>
+                      <input
+                        type="text"
+                        value={footerTitle}
+                        onChange={(e) => setFooterTitle(e.target.value)}
+                        className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-semibold mb-2">Texte legal</label>
+                      <input
+                        type="text"
+                        value={footerLegalText}
+                        onChange={(e) => setFooterLegalText(e.target.value)}
+                        className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+                      />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-sm font-semibold mb-2">Description</label>
+                      <textarea
+                        value={footerDescription}
+                        onChange={(e) => setFooterDescription(e.target.value)}
+                        rows={3}
+                        className="w-full rounded border border-gray-300 px-3 py-2 text-sm"
+                      />
+                    </div>
+                  </div>
                   {/* Social Links */}
                   <div>
                     <div className="flex justify-between items-center mb-3">
@@ -577,6 +628,169 @@ export default function AdminPage() {
                       {footerSocialLinks.length === 0 && (
                         <p className="text-sm text-gray-500">Aucun réseau social. Ajoutez-en un.</p>
                       )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex justify-between items-center mb-3">
+                      <h3 className="text-lg font-semibold">Contacts</h3>
+                      <button
+                        type="button"
+                        onClick={() => setFooterContactItems([...footerContactItems, { label: '', value: '', url: '' }])}
+                        className="flex items-center gap-1 px-3 py-1.5 bg-gray-200 hover:bg-gray-300 rounded text-sm"
+                      >
+                        + Ajouter
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      {footerContactItems.map((item, i) => (
+                        <div key={i} className="grid gap-2 rounded border border-gray-200 bg-gray-50 p-3 sm:grid-cols-3">
+                          <input
+                            type="text"
+                            value={item.label}
+                            onChange={(e) => {
+                              const updated = [...footerContactItems]
+                              updated[i] = { ...updated[i], label: e.target.value }
+                              setFooterContactItems(updated)
+                            }}
+                            placeholder="Libelle"
+                            className="rounded border border-gray-300 px-3 py-1.5 text-sm"
+                          />
+                          <input
+                            type="text"
+                            value={item.value}
+                            onChange={(e) => {
+                              const updated = [...footerContactItems]
+                              updated[i] = { ...updated[i], value: e.target.value }
+                              setFooterContactItems(updated)
+                            }}
+                            placeholder="Valeur"
+                            className="rounded border border-gray-300 px-3 py-1.5 text-sm"
+                          />
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              value={item.url || ''}
+                              onChange={(e) => {
+                                const updated = [...footerContactItems]
+                                updated[i] = { ...updated[i], url: e.target.value }
+                                setFooterContactItems(updated)
+                              }}
+                              placeholder="URL optionnelle"
+                              className="flex-1 rounded border border-gray-300 px-3 py-1.5 text-sm"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setFooterContactItems(footerContactItems.filter((_, idx) => idx !== i))}
+                              className="px-3 py-1.5 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
+                            >
+                              Supprimer
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex justify-between items-center mb-3">
+                      <h3 className="text-lg font-semibold">Blocs libres</h3>
+                      <button
+                        type="button"
+                        onClick={() => setFooterInfoSections([...footerInfoSections, { title: '', items: [{ label: '', value: '', url: '' }] }])}
+                        className="flex items-center gap-1 px-3 py-1.5 bg-gray-200 hover:bg-gray-300 rounded text-sm"
+                      >
+                        + Ajouter un bloc
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      {footerInfoSections.map((section, sectionIndex) => (
+                        <div key={sectionIndex} className="rounded border border-gray-200 p-4">
+                          <div className="mb-3 flex gap-2">
+                            <input
+                              type="text"
+                              value={section.title}
+                              onChange={(e) => {
+                                const updated = [...footerInfoSections]
+                                updated[sectionIndex] = { ...updated[sectionIndex], title: e.target.value }
+                                setFooterInfoSections(updated)
+                              }}
+                              placeholder="Titre du bloc"
+                              className="flex-1 rounded border border-gray-300 px-3 py-2 text-sm"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setFooterInfoSections(footerInfoSections.filter((_, idx) => idx !== sectionIndex))}
+                              className="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
+                            >
+                              Supprimer
+                            </button>
+                          </div>
+                          <div className="space-y-2">
+                            {section.items.map((item, itemIndex) => (
+                              <div key={itemIndex} className="grid gap-2 sm:grid-cols-3">
+                                <input
+                                  type="text"
+                                  value={item.label}
+                                  onChange={(e) => {
+                                    const updated = [...footerInfoSections]
+                                    updated[sectionIndex].items[itemIndex] = { ...updated[sectionIndex].items[itemIndex], label: e.target.value }
+                                    setFooterInfoSections(updated)
+                                  }}
+                                  placeholder="Libelle"
+                                  className="rounded border border-gray-300 px-3 py-1.5 text-sm"
+                                />
+                                <input
+                                  type="text"
+                                  value={item.value}
+                                  onChange={(e) => {
+                                    const updated = [...footerInfoSections]
+                                    updated[sectionIndex].items[itemIndex] = { ...updated[sectionIndex].items[itemIndex], value: e.target.value }
+                                    setFooterInfoSections(updated)
+                                  }}
+                                  placeholder="Valeur"
+                                  className="rounded border border-gray-300 px-3 py-1.5 text-sm"
+                                />
+                                <div className="flex gap-2">
+                                  <input
+                                    type="text"
+                                    value={item.url || ''}
+                                    onChange={(e) => {
+                                      const updated = [...footerInfoSections]
+                                      updated[sectionIndex].items[itemIndex] = { ...updated[sectionIndex].items[itemIndex], url: e.target.value }
+                                      setFooterInfoSections(updated)
+                                    }}
+                                    placeholder="URL optionnelle"
+                                    className="flex-1 rounded border border-gray-300 px-3 py-1.5 text-sm"
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      const updated = [...footerInfoSections]
+                                      updated[sectionIndex].items = updated[sectionIndex].items.filter((_, idx) => idx !== itemIndex)
+                                      setFooterInfoSections(updated)
+                                    }}
+                                    className="px-3 py-1.5 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
+                                  >
+                                    X
+                                  </button>
+                                </div>
+                              </div>
+                            ))}
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const updated = [...footerInfoSections]
+                                updated[sectionIndex].items.push({ label: '', value: '', url: '' })
+                                setFooterInfoSections(updated)
+                              }}
+                              className="rounded bg-gray-200 px-3 py-1.5 text-sm hover:bg-gray-300"
+                            >
+                              Ajouter une ligne
+                            </button>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
 
