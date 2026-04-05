@@ -24,7 +24,7 @@ export default function AdminPage() {
   const [articles, setArticles] = useState<Article[]>([])
   const [categories, setCategories] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'articles' | 'categories' | 'edit-suggestions'>('articles')
+  const [activeTab, setActiveTab] = useState<'articles' | 'categories' | 'edit-suggestions' | 'footer'>('articles')
   const [editSuggestions, setEditSuggestions] = useState<Array<{
     id: string
     article_slug: string
@@ -38,11 +38,54 @@ export default function AdminPage() {
   const [newCategory, setNewCategory] = useState('')
   const [isAddingCategory, setIsAddingCategory] = useState(false)
 
+  // Footer settings state
+  const [footerSocialLinks, setFooterSocialLinks] = useState<Array<{ label: string; url: string; type: string }>>([])
+  const [footerFriendlySites, setFooterFriendlySites] = useState<Array<{ label: string; url: string }>>([])
+  const [footerLoading, setFooterLoading] = useState(false)
+  const [footerSaving, setFooterSaving] = useState(false)
+  const [footerSaved, setFooterSaved] = useState(false)
+
   useEffect(() => {
     fetchArticles()
     fetchCategories()
     fetchEditSuggestions()
+    fetchFooter()
   }, [])
+
+  const fetchFooter = async () => {
+    setFooterLoading(true)
+    try {
+      const response = await fetch('/api/settings?key=footer')
+      const data = await response.json()
+      const value = data.value || {}
+      setFooterSocialLinks(value.socialLinks || [])
+      setFooterFriendlySites(value.friendlySites || [])
+    } catch (error) {
+      console.error('Error fetching footer settings:', error)
+    } finally {
+      setFooterLoading(false)
+    }
+  }
+
+  const saveFooter = async () => {
+    setFooterSaving(true)
+    setFooterSaved(false)
+    try {
+      const response = await fetch('/api/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key: 'footer', value: { socialLinks: footerSocialLinks, friendlySites: footerFriendlySites } }),
+      })
+      if (!response.ok) throw new Error('Failed to save')
+      setFooterSaved(true)
+      setTimeout(() => setFooterSaved(false), 3000)
+    } catch (error) {
+      console.error('Error saving footer:', error)
+      alert('Erreur lors de la sauvegarde du footer')
+    } finally {
+      setFooterSaving(false)
+    }
+  }
 
   const fetchEditSuggestions = async () => {
     setSuggestionsLoading(true)
@@ -232,6 +275,16 @@ export default function AdminPage() {
                   {editSuggestions.length}
                 </span>
               )}
+            </button>
+            <button
+              onClick={() => setActiveTab('footer')}
+              className={`px-3 py-2 font-medium text-sm whitespace-nowrap ${
+                activeTab === 'footer'
+                  ? 'border-b-2 border-primary text-primary'
+                  : 'text-gray-600 hover:text-primary'
+              }`}
+            >
+              Footer
             </button>
           </div>
 
@@ -442,6 +495,147 @@ export default function AdminPage() {
               )}
             </div>
           )}
+          {/* Footer Tab */}
+          {activeTab === 'footer' && (
+            <div>
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold">Gérer le footer</h2>
+                <button
+                  onClick={saveFooter}
+                  disabled={footerSaving}
+                  className="px-4 py-2 bg-primary text-white rounded hover:opacity-90 disabled:bg-gray-300 disabled:cursor-not-allowed text-sm font-medium"
+                >
+                  {footerSaving ? 'Enregistrement...' : footerSaved ? 'Enregistré !' : 'Enregistrer'}
+                </button>
+              </div>
+
+              {footerLoading ? (
+                <div className="text-center py-8">Chargement...</div>
+              ) : (
+                <div className="space-y-8">
+                  {/* Social Links */}
+                  <div>
+                    <div className="flex justify-between items-center mb-3">
+                      <h3 className="text-lg font-semibold">Réseaux sociaux</h3>
+                      <button
+                        type="button"
+                        onClick={() => setFooterSocialLinks([...footerSocialLinks, { label: '', url: '', type: 'other' }])}
+                        className="flex items-center gap-1 px-3 py-1.5 bg-gray-200 hover:bg-gray-300 rounded text-sm"
+                      >
+                        + Ajouter
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      {footerSocialLinks.map((link, i) => (
+                        <div key={i} className="flex flex-col sm:flex-row gap-2 items-start sm:items-center border border-gray-200 rounded p-3 bg-gray-50">
+                          <select
+                            value={link.type}
+                            onChange={(e) => {
+                              const updated = [...footerSocialLinks]
+                              updated[i] = { ...updated[i], type: e.target.value }
+                              setFooterSocialLinks(updated)
+                            }}
+                            className="px-2 py-1.5 border border-gray-300 rounded text-sm w-full sm:w-32"
+                          >
+                            <option value="facebook">Facebook</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="youtube">YouTube</option>
+                            <option value="twitter">Twitter/X</option>
+                            <option value="other">Autre</option>
+                          </select>
+                          <input
+                            type="text"
+                            value={link.label}
+                            onChange={(e) => {
+                              const updated = [...footerSocialLinks]
+                              updated[i] = { ...updated[i], label: e.target.value }
+                              setFooterSocialLinks(updated)
+                            }}
+                            placeholder="Libellé (ex: Facebook)"
+                            className="flex-1 px-3 py-1.5 border border-gray-300 rounded text-sm w-full"
+                          />
+                          <input
+                            type="url"
+                            value={link.url}
+                            onChange={(e) => {
+                              const updated = [...footerSocialLinks]
+                              updated[i] = { ...updated[i], url: e.target.value }
+                              setFooterSocialLinks(updated)
+                            }}
+                            placeholder="URL"
+                            className="flex-1 px-3 py-1.5 border border-gray-300 rounded text-sm w-full"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setFooterSocialLinks(footerSocialLinks.filter((_, idx) => idx !== i))}
+                            className="px-3 py-1.5 bg-red-500 text-white rounded hover:bg-red-600 text-sm whitespace-nowrap"
+                          >
+                            Supprimer
+                          </button>
+                        </div>
+                      ))}
+                      {footerSocialLinks.length === 0 && (
+                        <p className="text-sm text-gray-500">Aucun réseau social. Ajoutez-en un.</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Friendly Sites */}
+                  <div>
+                    <div className="flex justify-between items-center mb-3">
+                      <h3 className="text-lg font-semibold">Sites amis</h3>
+                      <button
+                        type="button"
+                        onClick={() => setFooterFriendlySites([...footerFriendlySites, { label: '', url: '' }])}
+                        className="flex items-center gap-1 px-3 py-1.5 bg-gray-200 hover:bg-gray-300 rounded text-sm"
+                      >
+                        + Ajouter
+                      </button>
+                    </div>
+                    <div className="space-y-3">
+                      {footerFriendlySites.map((site, i) => (
+                        <div key={i} className="flex flex-col sm:flex-row gap-2 items-start sm:items-center border border-gray-200 rounded p-3 bg-gray-50">
+                          <input
+                            type="text"
+                            value={site.label}
+                            onChange={(e) => {
+                              const updated = [...footerFriendlySites]
+                              updated[i] = { ...updated[i], label: e.target.value }
+                              setFooterFriendlySites(updated)
+                            }}
+                            placeholder="Libellé (ex: Site officiel — Grande Mosquée de Paris)"
+                            className="flex-1 px-3 py-1.5 border border-gray-300 rounded text-sm w-full"
+                          />
+                          <input
+                            type="url"
+                            value={site.url}
+                            onChange={(e) => {
+                              const updated = [...footerFriendlySites]
+                              updated[i] = { ...updated[i], url: e.target.value }
+                              setFooterFriendlySites(updated)
+                            }}
+                            placeholder="URL"
+                            className="flex-1 px-3 py-1.5 border border-gray-300 rounded text-sm w-full"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setFooterFriendlySites(footerFriendlySites.filter((_, idx) => idx !== i))}
+                            className="px-3 py-1.5 bg-red-500 text-white rounded hover:bg-red-600 text-sm whitespace-nowrap"
+                          >
+                            Supprimer
+                          </button>
+                        </div>
+                      ))}
+                      {footerFriendlySites.length === 0 && (
+                        <p className="text-sm text-gray-500">Aucun site ami. Ajoutez-en un.</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
         </main>
       </div>
     </div>

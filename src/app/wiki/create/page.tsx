@@ -40,13 +40,21 @@ function CreateArticleForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
 
+  const DEFAULT_DOUAA = 'اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ وَعَافِهِ وَاعْفُ عَنْهُ، وَأَكْرِمْ نُزُلَهُ، وَوَسِّعْ مُدْخَلَهُ، وَاغْسِلْهُ بِالْمَاءِ وَالثَّلْجِ وَالْبَرَدِ، وَنَقِّهِ مِنَ الْخَطَايَا كَمَا نَقَّيْتَ الثَّوْبَ الأَبْيَضَ مِنَ الدَّنَسِ، وَأَبْدِلْهُ دَاراً خَيْراً مِنْ دَارِهِ، وَأَهْلاً خَيْراً مِنْ أَهْلِهِ، وَزَوْجاً خَيْراً مِنْ زَوْجِهِ، وَأَدْخِلْهُ الْجَنَّةَ، وَأَعِذْهُ مِنْ عَذَابِ الْقَبْرِ وَمِنْ عَذَابِ النَّارِ'
+
   const isQuillEmpty = (html: string) => !html || html.replace(/<(.|\n)*?>/g, '').trim() === '' || html === '<p><br></p>'
   const getCharCount = (html: string) => {
     return html.replace(/<(.|\n)*?>/g, '').trim().length
   }
   const charCount = getCharCount(content)
-  const BURIAL_CHAR_LIMIT = 140
+  const BURIAL_CHAR_LIMIT = 500
   const isBurialOverLimit = articleType === 'burial' && charCount > BURIAL_CHAR_LIMIT
+
+  useEffect(() => {
+    if (articleType === 'burial' && isQuillEmpty(content)) {
+      setContent(`<p>${DEFAULT_DOUAA}</p>`)
+    }
+  }, [articleType])
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -495,7 +503,7 @@ function CreateArticleForm() {
             {/* Content */}
             <div>
               <label className="block text-sm font-bold mb-2">
-                Contenu de l'article <span className="text-red-500">*</span>
+                {articleType === 'burial' ? 'Douaâ' : "Contenu de l'article"} <span className="text-red-500">*</span>
                 {articleType === 'burial' && (
                   <span className={`ml-2 text-xs font-normal ${isBurialOverLimit ? 'text-red-500' : 'text-gray-500'}`}>
                     ({charCount}/{BURIAL_CHAR_LIMIT} caractères)
@@ -505,10 +513,10 @@ function CreateArticleForm() {
               <QuillEditor
                 value={content}
                 onChange={setContent}
-                placeholder="Commencez à écrire votre article ici..."
+                placeholder={articleType === 'burial' ? 'Douaâ pour le défunt...' : 'Commencez à écrire votre article ici...'}
               />
               {isBurialOverLimit && (
-                <p className="text-red-500 text-xs mt-1">Le contenu ne doit pas dépasser {BURIAL_CHAR_LIMIT} caractères.</p>
+                <p className="text-red-500 text-xs mt-1">La Douaâ ne doit pas dépasser {BURIAL_CHAR_LIMIT} caractères.</p>
               )}
             </div>
 
