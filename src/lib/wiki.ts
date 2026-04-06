@@ -1,5 +1,5 @@
 import { supabase } from './supabase'
-import type { MosqueData, ImamData } from '@/types/mosque'
+import type { MosqueData, ImamData, BurialData } from '@/types/mosque'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -33,6 +33,8 @@ export interface WikiArticle {
   infobox?: InfoboxData | null
   mosque_data?: MosqueData | null
   imam_data?: ImamData | null
+  burial_data?: BurialData | null
+  references?: string | null
   image_url?: string | null
   categories: string[]
   author_name?: string | null
