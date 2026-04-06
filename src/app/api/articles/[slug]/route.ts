@@ -26,7 +26,7 @@ export async function PUT(
 ) {
   try {
     const body = await request.json()
-    const { title, content, excerpt, article_type, infobox, mosque_data, image_url, categories, author_name } = body
+    const { title, content, excerpt, article_type, infobox, mosque_data, imam_data, burial_data, image_url, categories, author_name, references } = body
 
     if (!title || !content) {
       return NextResponse.json(
@@ -45,6 +45,9 @@ export async function PUT(
       article_type: article_type || 'article',
       infobox: infobox || null,
       mosque_data: mosque_data || null,
+      imam_data: imam_data || null,
+      burial_data: burial_data || null,
+      references: references || null,
       image_url: image_url || null,
       categories: categories || [],
       author_name: author_name || null,

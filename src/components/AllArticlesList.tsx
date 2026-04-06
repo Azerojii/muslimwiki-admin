@@ -2,18 +2,20 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { ChevronDown, ChevronUp } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { WikiArticle } from '@/lib/wiki'
 
 interface AllArticlesListProps {
   articles: WikiArticle[]
 }
 
-const INITIAL_DISPLAY = 10
+const PAGE_SIZE = 10
 
 export default function AllArticlesList({ articles }: AllArticlesListProps) {
-  const [showAll, setShowAll] = useState(false)
-  const displayedArticles = showAll ? articles : articles.slice(0, INITIAL_DISPLAY)
+  const [page, setPage] = useState(1)
+  const totalPages = Math.max(1, Math.ceil(articles.length / PAGE_SIZE))
+  const startIndex = (page - 1) * PAGE_SIZE
+  const displayedArticles = articles.slice(startIndex, startIndex + PAGE_SIZE)
 
   if (articles.length === 0) {
     return null
@@ -66,7 +68,7 @@ export default function AllArticlesList({ articles }: AllArticlesListProps) {
                   {article.article_type === 'imam' && (
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-500 text-white text-xs font-medium rounded-full">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/muslimah_white.png" alt="" className="w-3.5 h-3.5 object-contain" />
+                      <img src="/muslimah_white.png" alt="" className="w-10 h-10 object-contain" />
                       Imam
                     </span>
                   )}
@@ -81,28 +83,59 @@ export default function AllArticlesList({ articles }: AllArticlesListProps) {
             </div>
           </Link>
         ))}
-
-        {articles.length > INITIAL_DISPLAY && (
-          <div className="mt-4 text-center">
-            <button
-              onClick={() => setShowAll(!showAll)}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white text-sm rounded-lg hover:opacity-90 transition-all shadow-sm"
-            >
-              {showAll ? (
-                <>
-                  <ChevronUp size={18} />
-                  Voir moins
-                </>
-              ) : (
-                <>
-                  <ChevronDown size={18} />
-                  Voir plus ({articles.length - INITIAL_DISPLAY} articles restants)
-                </>
-              )}
-            </button>
-          </div>
-        )}
       </div>
+
+      {totalPages > 1 && (
+        <div className="mt-6 flex items-center justify-center gap-1">
+          <button
+            onClick={() => setPage((current) => Math.max(1, current - 1))}
+            disabled={page === 1}
+            className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-700 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <ChevronLeft size={16} />
+            Précédent
+          </button>
+
+          {Array.from({ length: totalPages }, (_, i) => i + 1)
+            .filter((p) => {
+              if (totalPages <= 5) return true
+              if (p === 1 || p === totalPages) return true
+              if (Math.abs(p - page) <= 1) return true
+              return false
+            })
+            .reduce<(number | '…')[]>((acc, p, idx, arr) => {
+              if (idx > 0 && (p as number) - (arr[idx - 1] as number) > 1) acc.push('…')
+              acc.push(p)
+              return acc
+            }, [])
+            .map((p, idx) =>
+              p === '…' ? (
+                <span key={`ellipsis-${idx}`} className="px-2 py-2 text-sm text-gray-400">…</span>
+              ) : (
+                <button
+                  key={p}
+                  onClick={() => setPage(p as number)}
+                  className={`min-w-[36px] rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                    page === p
+                      ? 'bg-primary text-white'
+                      : 'border border-gray-200 text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  {p}
+                </button>
+              )
+            )}
+
+          <button
+            onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
+            disabled={page === totalPages}
+            className="inline-flex items-center gap-1 rounded-lg bg-primary px-3 py-2 text-sm text-white disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Suivant
+            <ChevronRight size={16} />
+          </button>
+        </div>
+      )}
     </div>
   )
 }
