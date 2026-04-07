@@ -23,6 +23,12 @@ export interface MosqueWorker {
   to?: string
 }
 
+export interface AssociationMember {
+  firstName: string
+  lastName: string
+  role?: string
+}
+
 export interface MosqueData {
   name?: string
   headerColor?: string
@@ -38,6 +44,8 @@ export interface MosqueData {
   founders?: MosqueFounder[]
   previousCommittee?: CommitteeMember[]
   currentCommittee?: CommitteeMember[]
+  associationName?: string
+  associationMembers?: AssociationMember[]
   facilities?: string[]
   gallery?: { src: string; caption: string }[]
   region?: string

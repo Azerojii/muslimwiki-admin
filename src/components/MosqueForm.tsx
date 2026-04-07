@@ -1,7 +1,7 @@
 'use client'
 
 import { Plus, X } from 'lucide-react'
-import type { MosqueData, MosqueFounder, CommitteeMember, MosqueImam, MosqueWorker } from '@/types/mosque'
+import type { MosqueData, MosqueFounder, CommitteeMember, MosqueImam, MosqueWorker, AssociationMember } from '@/types/mosque'
 import { FRENCH_REGIONS } from '@/lib/regions'
 
 interface MosqueFormProps {
@@ -51,6 +51,19 @@ export default function MosqueForm({ mosqueData, onChange }: MosqueFormProps) {
   }
   const removeCurrentMember = (idx: number) => {
     onChange({ ...mosqueData, currentCommittee: (mosqueData.currentCommittee || []).filter((_, i) => i !== idx) })
+  }
+
+  // Association Members
+  const addAssociationMember = () => {
+    onChange({ ...mosqueData, associationMembers: [...(mosqueData.associationMembers || []), { firstName: '', lastName: '' }] })
+  }
+  const updateAssociationMember = (idx: number, key: keyof AssociationMember, val: string) => {
+    const updated = [...(mosqueData.associationMembers || [])]
+    updated[idx] = { ...updated[idx], [key]: val }
+    onChange({ ...mosqueData, associationMembers: updated })
+  }
+  const removeAssociationMember = (idx: number) => {
+    onChange({ ...mosqueData, associationMembers: (mosqueData.associationMembers || []).filter((_, i) => i !== idx) })
   }
 
   // Previous Imams
@@ -401,6 +414,66 @@ export default function MosqueForm({ mosqueData, onChange }: MosqueFormProps) {
             <Plus size={12} />
             Ajouter un membre actuel
           </button>
+        </div>
+      </div>
+
+      {/* Association */}
+      <div className="border border-gray-200 rounded-lg p-4 bg-white space-y-3">
+        <label className="block text-sm font-bold mb-1">Association actuelle</label>
+        <div>
+          <label className="block text-xs font-medium mb-1">Nom de l'association</label>
+          <input
+            type="text"
+            value={mosqueData.associationName || ''}
+            onChange={(e) => update('associationName', e.target.value)}
+            className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+            placeholder="Nom de l'association actuelle"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-medium mb-2">Membres de l'association</label>
+          <div className="space-y-2">
+            {(mosqueData.associationMembers || []).map((member, idx) => (
+              <div key={idx} className="flex gap-2 flex-wrap">
+                <input
+                  type="text"
+                  value={member.lastName}
+                  onChange={(e) => updateAssociationMember(idx, 'lastName', e.target.value)}
+                  className="flex-1 min-w-[120px] px-3 py-1.5 border border-gray-300 rounded text-sm"
+                  placeholder="Nom de famille"
+                />
+                <input
+                  type="text"
+                  value={member.firstName}
+                  onChange={(e) => updateAssociationMember(idx, 'firstName', e.target.value)}
+                  className="flex-1 min-w-[120px] px-3 py-1.5 border border-gray-300 rounded text-sm"
+                  placeholder="Prénom"
+                />
+                <input
+                  type="text"
+                  value={member.role || ''}
+                  onChange={(e) => updateAssociationMember(idx, 'role', e.target.value)}
+                  className="w-36 px-3 py-1.5 border border-gray-300 rounded text-sm"
+                  placeholder="Rôle (optionnel)"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeAssociationMember(idx)}
+                  className="px-2 py-1.5 bg-red-500 text-white rounded hover:bg-red-600 text-xs"
+                >
+                  <X size={12} />
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={addAssociationMember}
+              className="flex items-center gap-1 px-3 py-1.5 bg-blue-100 hover:bg-blue-200 rounded text-xs"
+            >
+              <Plus size={12} />
+              Ajouter un membre
+            </button>
+          </div>
         </div>
       </div>
 
