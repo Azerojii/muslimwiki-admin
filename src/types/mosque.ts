@@ -16,6 +16,13 @@ export interface CommitteeMember {
   to?: string
 }
 
+export interface MosqueWorker {
+  name: string
+  rank?: string
+  from?: string
+  to?: string
+}
+
 export interface MosqueData {
   name?: string
   headerColor?: string
@@ -38,6 +45,7 @@ export interface MosqueData {
   commune?: string
   currentImam?: string
   previousImams?: MosqueImam[]
+  workers?: MosqueWorker[]
   contactPhone?: string
   contactEmail?: string
 }

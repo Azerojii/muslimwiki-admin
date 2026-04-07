@@ -44,7 +44,7 @@ export default function EditArticlePage() {
     return html.replace(/<(.|\n)*?>/g, '').trim().length
   }
   const charCount = getCharCount(content)
-  const BURIAL_CHAR_LIMIT = 500
+  const BURIAL_CHAR_LIMIT = 250
   const isBurialOverLimit = articleType === 'burial' && charCount > BURIAL_CHAR_LIMIT
 
   useEffect(() => {
@@ -226,8 +226,8 @@ export default function EditArticlePage() {
         throw new Error(data.error || 'Failed to update article')
       }
 
-      // Redirect to the article
-      router.push(`/wiki/${slug}`)
+      // Redirect to the admin dashboard
+      router.push('/admin')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update article')
     } finally {

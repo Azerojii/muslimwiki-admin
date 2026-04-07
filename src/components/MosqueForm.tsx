@@ -1,7 +1,7 @@
 'use client'
 
 import { Plus, X } from 'lucide-react'
-import type { MosqueData, MosqueFounder, CommitteeMember, MosqueImam } from '@/types/mosque'
+import type { MosqueData, MosqueFounder, CommitteeMember, MosqueImam, MosqueWorker } from '@/types/mosque'
 import { FRENCH_REGIONS } from '@/lib/regions'
 
 interface MosqueFormProps {
@@ -64,6 +64,19 @@ export default function MosqueForm({ mosqueData, onChange }: MosqueFormProps) {
   }
   const removePreviousImam = (idx: number) => {
     onChange({ ...mosqueData, previousImams: (mosqueData.previousImams || []).filter((_, i) => i !== idx) })
+  }
+
+  // Workers
+  const addWorker = () => {
+    onChange({ ...mosqueData, workers: [...(mosqueData.workers || []), { name: '' }] })
+  }
+  const updateWorker = (idx: number, key: keyof MosqueWorker, val: string) => {
+    const updated = [...(mosqueData.workers || [])]
+    updated[idx] = { ...updated[idx], [key]: val }
+    onChange({ ...mosqueData, workers: updated })
+  }
+  const removeWorker = (idx: number) => {
+    onChange({ ...mosqueData, workers: (mosqueData.workers || []).filter((_, i) => i !== idx) })
   }
 
   // Facilities
@@ -344,9 +357,9 @@ export default function MosqueForm({ mosqueData, onChange }: MosqueFormProps) {
         </div>
       </div>
 
-      {/* Current Committee */}
+      {/* Current Association */}
       <div>
-        <label className="block text-xs font-medium mb-2">Membres actuels du comité</label>
+        <label className="block text-xs font-medium mb-2">Membres de l'association actuelle</label>
         <div className="space-y-2">
           {(mosqueData.currentCommittee || []).map((member, idx) => (
             <div key={idx} className="flex gap-2 flex-wrap">
@@ -446,6 +459,60 @@ export default function MosqueForm({ mosqueData, onChange }: MosqueFormProps) {
           >
             <Plus size={12} />
             Ajouter un imam précédent
+          </button>
+        </div>
+      </div>
+
+      {/* Workers */}
+      <div>
+        <label className="block text-xs font-medium mb-2">Travailleurs de la mosquée</label>
+        <div className="space-y-2">
+          {(mosqueData.workers || []).map((worker, idx) => (
+            <div key={idx} className="flex gap-2 flex-wrap">
+              <input
+                type="text"
+                value={worker.name}
+                onChange={(e) => updateWorker(idx, 'name', e.target.value)}
+                className="flex-1 min-w-[140px] px-3 py-1.5 border border-gray-300 rounded text-sm"
+                placeholder="Nom"
+              />
+              <input
+                type="text"
+                value={worker.rank || ''}
+                onChange={(e) => updateWorker(idx, 'rank', e.target.value)}
+                className="w-32 px-3 py-1.5 border border-gray-300 rounded text-sm"
+                placeholder="Poste / Rang"
+              />
+              <input
+                type="text"
+                value={worker.from || ''}
+                onChange={(e) => updateWorker(idx, 'from', e.target.value)}
+                className="w-24 px-3 py-1.5 border border-gray-300 rounded text-sm"
+                placeholder="De (année)"
+              />
+              <input
+                type="text"
+                value={worker.to || ''}
+                onChange={(e) => updateWorker(idx, 'to', e.target.value)}
+                className="w-24 px-3 py-1.5 border border-gray-300 rounded text-sm"
+                placeholder="À (année)"
+              />
+              <button
+                type="button"
+                onClick={() => removeWorker(idx)}
+                className="px-2 py-1.5 bg-red-500 text-white rounded hover:bg-red-600 text-xs"
+              >
+                <X size={12} />
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={addWorker}
+            className="flex items-center gap-1 px-3 py-1.5 bg-blue-100 hover:bg-blue-200 rounded text-xs"
+          >
+            <Plus size={12} />
+            Ajouter un travailleur
           </button>
         </div>
       </div>

@@ -29,12 +29,21 @@ export async function POST(request: NextRequest) {
 
     const supabase = getSupabase()
     const normalizedValue = key === 'footer' ? normalizeFooterSettings(value) : value
-    const { error } = await supabase
+
+    // Try upsert with updated_at first, fall back without it if column doesn't exist
+    let result = await supabase
       .from('wiki_settings')
       .upsert({ key, value: normalizedValue, updated_at: new Date().toISOString() }, { onConflict: 'key' })
 
-    if (error) {
-      throw error
+    if (result.error) {
+      // Retry without updated_at in case the column doesn't exist
+      result = await supabase
+        .from('wiki_settings')
+        .upsert({ key, value: normalizedValue }, { onConflict: 'key' })
+    }
+
+    if (result.error) {
+      throw result.error
     }
 
     return NextResponse.json({ success: true })
