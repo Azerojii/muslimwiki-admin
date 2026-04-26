@@ -685,41 +685,41 @@ export default function MosqueForm({ mosqueData, onChange }: MosqueFormProps) {
           />
         </div>
       </div>
-    </div>
 
-    {/* Bank Information */}
-    <div className="border border-gray-200 rounded-xl p-4 bg-gray-50/50">
-      <h3 className="font-semibold text-sm mb-3 text-gray-700">Informations bancaires (dons)</h3>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <div>
-          <label className="block text-xs font-medium mb-1">Nom du titulaire</label>
-          <input
-            type="text"
-            value={mosqueData.bankAccountName || ''}
-            onChange={(e) => update('bankAccountName', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
-            placeholder="ex: Association Al-Ihsan"
-          />
-        </div>
-        <div>
-          <label className="block text-xs font-medium mb-1">Numéro de compte (IBAN)</label>
-          <input
-            type="text"
-            value={mosqueData.bankAccountNumber || ''}
-            onChange={(e) => update('bankAccountNumber', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
-            placeholder="ex: FR76 1234 5678 ..."
-          />
-        </div>
-        <div>
-          <label className="block text-xs font-medium mb-1">Banque</label>
-          <input
-            type="text"
-            value={mosqueData.bankName || ''}
-            onChange={(e) => update('bankName', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
-            placeholder="ex: BNP Paribas"
-          />
+      {/* Bank Information */}
+      <div className="border border-gray-200 rounded-xl p-4 bg-gray-50/50">
+        <h3 className="font-semibold text-sm mb-3 text-gray-700">Informations bancaires (dons)</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label className="block text-xs font-medium mb-1">Nom du titulaire</label>
+            <input
+              type="text"
+              value={mosqueData.bankAccountName || ''}
+              onChange={(e) => update('bankAccountName', e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+              placeholder="ex: Association Al-Ihsan"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium mb-1">Numéro de compte (IBAN)</label>
+            <input
+              type="text"
+              value={mosqueData.bankAccountNumber || ''}
+              onChange={(e) => update('bankAccountNumber', e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+              placeholder="ex: FR76 1234 5678 ..."
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium mb-1">Banque</label>
+            <input
+              type="text"
+              value={mosqueData.bankName || ''}
+              onChange={(e) => update('bankName', e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+              placeholder="ex: BNP Paribas"
+            />
+          </div>
         </div>
       </div>
     </div>
