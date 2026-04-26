@@ -282,6 +282,36 @@ export default function MosqueInfobox({ mosque }: MosqueInfoboxProps) {
           </table>
         </>
       )}
+      {/* Bank info */}
+      {(mosque.bankAccountName || mosque.bankAccountNumber || mosque.bankName) && (
+        <>
+          <div className="bg-[#eaecf0] text-gray-800 font-semibold px-3 py-1.5 text-center">
+            Informations bancaires (dons)
+          </div>
+          <table className="w-full border-collapse">
+            <tbody>
+              {mosque.bankName && (
+                <tr className="border-t border-[#a2a9b1]">
+                  <td className="py-1.5 px-3 align-top text-gray-700 font-medium" style={{ width: '45%' }}>Banque</td>
+                  <td className="py-1.5 px-3 align-top">{mosque.bankName}</td>
+                </tr>
+              )}
+              {mosque.bankAccountName && (
+                <tr className="border-t border-[#a2a9b1]">
+                  <td className="py-1.5 px-3 align-top text-gray-700 font-medium">Titulaire</td>
+                  <td className="py-1.5 px-3 align-top">{mosque.bankAccountName}</td>
+                </tr>
+              )}
+              {mosque.bankAccountNumber && (
+                <tr className="border-t border-[#a2a9b1]">
+                  <td className="py-1.5 px-3 align-top text-gray-700 font-medium">IBAN</td>
+                  <td className="py-1.5 px-3 align-top font-mono text-xs">{mosque.bankAccountNumber}</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </>
+      )}
     </div>
   )
 }

@@ -56,6 +56,9 @@ export interface MosqueData {
   workers?: MosqueWorker[]
   contactPhone?: string
   contactEmail?: string
+  bankAccountName?: string
+  bankAccountNumber?: string
+  bankName?: string
 }
 
 export interface ImamData {

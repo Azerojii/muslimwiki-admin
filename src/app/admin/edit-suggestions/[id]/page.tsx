@@ -16,6 +16,7 @@ interface EditSuggestion {
   suggested_title?: string | null
   suggested_excerpt?: string | null
   suggested_categories?: string[] | null
+  original_content?: string | null
   reason?: string
   suggester_name?: string
   status: string
@@ -196,24 +197,43 @@ export default function ReviewEditSuggestionPage() {
             </div>
           )}
 
-          <div>
-            <h2 className="text-xl font-bold mb-3">Contenu suggéré</h2>
-            <div className="border border-gray-300 rounded-lg overflow-hidden">
-              <div className="bg-gray-50 px-4 py-2 border-b border-gray-300 text-sm font-medium text-gray-600">
-                Prévisualisation
-              </div>
-              <div className="p-4">
-                <MarkdownRenderer content={suggestion.suggested_content} />
+          {suggestion.original_content ? (
+            <div>
+              <h2 className="text-xl font-bold mb-3">Comparaison avant / après</h2>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <div className="text-sm font-semibold text-red-600 mb-1">Contenu actuel</div>
+                  <div className="border border-red-200 rounded-lg p-4 bg-red-50/30 overflow-auto max-h-96 text-sm">
+                    <MarkdownRenderer content={suggestion.original_content} />
+                  </div>
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-green-600 mb-1">Contenu suggéré</div>
+                  <div className="border border-green-200 rounded-lg p-4 bg-green-50/30 overflow-auto max-h-96 text-sm">
+                    <MarkdownRenderer content={suggestion.suggested_content} />
+                  </div>
+                </div>
               </div>
             </div>
-
-            <div className="mt-4">
-              <h3 className="text-sm font-medium text-gray-600 mb-2">Source Markdown</h3>
-              <pre className="bg-gray-50 border border-gray-300 rounded p-4 text-sm font-mono overflow-auto max-h-64">
-                {suggestion.suggested_content}
-              </pre>
+          ) : (
+            <div>
+              <h2 className="text-xl font-bold mb-3">Contenu suggéré</h2>
+              <div className="border border-gray-300 rounded-lg overflow-hidden">
+                <div className="bg-gray-50 px-4 py-2 border-b border-gray-300 text-sm font-medium text-gray-600">
+                  Prévisualisation
+                </div>
+                <div className="p-4">
+                  <MarkdownRenderer content={suggestion.suggested_content} />
+                </div>
+              </div>
+              <div className="mt-4">
+                <h3 className="text-sm font-medium text-gray-600 mb-2">Source</h3>
+                <pre className="bg-gray-50 border border-gray-300 rounded p-4 text-sm font-mono overflow-auto max-h-64">
+                  {suggestion.suggested_content}
+                </pre>
+              </div>
             </div>
-          </div>
+          )}
         </main>
       </div>
     </div>
